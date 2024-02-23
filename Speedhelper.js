@@ -4,24 +4,30 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.2
-// @include 	   /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
+// @version        0.12.3
+// @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
 // @author         Broos Gert '2015
 // @license        MIT/BSD/X11
-// @icon		   data:image/png;base64,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
+// @icon		       data:image/png;base64,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
+// @downloadURL    https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.user.js
+// @updateURL      https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.meta.js
 // ==/UserScript==
 /* Changelog
 
 */
-var VERSION = '0.12.2';
+/* global W */
+/* global I18n */
+/* global $ */
+
+var VERSION = '0.12.3';
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
 (function() {
   var wf = document.createElement('script');
-  wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+  wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
     '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
   wf.type = 'text/javascript';
   wf.async = 'true';
@@ -48,7 +54,6 @@ var BGk = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAiCAYAAADPuYByAA
 
 /* // BGh = ['data:image/png;base64,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','34|23|17|hidden']; // lost in translation */
 
-var selectedItems;
 var signConfig = {
   NL:         {'sgn': BGa, 'ann':'kph', 'spd':[ [15,BGb], 30, 50, 60, 70, 80, 100, 120, 130 ]}, //------------------------ 1.The Netherlands
   BE:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 50, 70, 90, 100, 120 ]}, //--------------------------------- 2.Belgium
@@ -125,7 +130,7 @@ var signConfig = {
   HK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 100, 110]}, // ------------------------------------------- 73.Hong Kong
   EN:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 110]}, // --------------------- 74.Estonia
   SN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 70, 80, 90]}, // --------------------------------------------- 75.Singapore
-  CM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 100]}, // ---------------------------------------------------- 76.Cameroon
+  //CM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 100]}, // ---------------------------------------------------- 76.Cameroon
   CI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, // --------------------------------------- 77.Chile
   QA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 80, 100, 120]}, // ----------------------------------- 78.Quatar
   MW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 60, 80, 100, 120]}, // ------------------------------------------- 79.Montenegro
@@ -134,39 +139,49 @@ var signConfig = {
   CW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 82.Curacao
   BQ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 83.Bonaire / Saba Island
   MF:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 84.Sint Eustatius
-  MN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90]}, // ----------------------------------------- 85.Monaco
-  UP:			{'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20, BGh], 30, 40, 50, 90, 110, [130, BGj] ]}, // ----------------- 86.Ukraine
-  BK: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 87.Bosnia-Herzegovina
+  //MN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90]}, // ----------------------------------------- 85.Monaco
+  UP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20, BGh], 30, 40, 50, 90, 110, [130, BGj] ]}, // ----------------- 86.Ukraine
+  BK: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 87.Bosnia-Herzegovina
   GR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 88.Greece
-  PP:			{'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 130]}, // -------------------------------------------------------- 89.Papua New Guinea
-  MP:			{'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 110]}, // ---------------------------------------------------- 90.Mauritius
-  IR:			{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 90, 100, 110, 120]}, // ---------------------------------- 91.Iran
-  DR:			{'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 60, 100, 120]}, // ----------------------------------- 92.Dominican Republic
-  BG:			{'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 80]}, // ------------------------------------------------- 93.Bangladesh
-  PE:			{'sgn': BGa, 'ann':'kph', 'spd':[ 35, 40, 55, 60, 80, 100, 120 ]}, // -------------------------------------- 94.Peru
-  ZA:			{'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------ 95.Zambia
-  AO:			{'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------- 96.Angola
-  MZ:			{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ---------------------------------- 97.Mozambique
-  CY:			{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 80, 100 ]}, // ----------------------------------------------- 98.Cyprus
-  AJ: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ----------------------------------------------- 99.Azerbaijan
-  AM: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ---------------------------------------------------- 100.Armenia
-  AO: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // -------------------------- 101.Angola
-  GT: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 20, 25, 30, 40, 60, 70, 80, 90 ]}, // ---------------------------- 102.Guatemala
-  IR: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120 ]}, // --------- 103.Iran
-  JM: 		{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 65, 80, 100, 110 ]}, // -------------------------------------- 104.Jamaica
-  VQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ,60, 65, 70, 75, 80]}, //------- 105.Virgin Islands (US)
+  PP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 130]}, // -------------------------------------------------------- 89.Papua New Guinea
+  MP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 110]}, // ---------------------------------------------------- 90.Mauritius
+  //IR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 90, 100, 110, 120]}, // ---------------------------------- 91.Iran
+  DR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 60, 100, 120]}, // ----------------------------------- 92.Dominican Republic
+  BG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 80]}, // ------------------------------------------------- 93.Bangladesh
+  PE:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 35, 40, 55, 60, 80, 100, 120 ]}, // -------------------------------------- 94.Peru
+  ZA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------ 95.Zambia
+  //AO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------- 96.Angola
+  MZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ---------------------------------- 97.Mozambique
+  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 80, 100 ]}, // ----------------------------------------------- 98.Cyprus
+  AJ: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ----------------------------------------------- 99.Azerbaijan
+  AM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ---------------------------------------------------- 100.Armenia
+  AO: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // -------------------------- 101.Angola
+  GT: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 20, 25, 30, 40, 60, 70, 80, 90 ]}, // ---------------------------- 102.Guatemala
+  IR: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120 ]}, // --------- 103.Iran
+  JM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 65, 80, 100, 110 ]}, // -------------------------------------- 104.Jamaica
+  VQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ,60, 65, 70, 75, 80 ]}, //------ 105.Virgin Islands (US)
   CQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5,10, 15, 20, 25, 30, 35, 40, 45]}, //------------------------------------ 106. Northern Mariana Islands (US)
   PK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, //------------------------------------------- 107. Pakistan
-  BA:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90, 100, 120]}, //-------------------------------- 108.Bahrain
-  SA:			{'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //------------- 109.Saudi Arabia
-  KU:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 45, 50, 60, 80, 100, 120]}, //-------------------------------- 110.Kuwait
-  KG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 20, 40, 50, 60, 90]}, //----------------------------------------------- 111.Kyrgyzstan
-  WA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 80, 100, 120]}, //---------------------------------------------112.Namibia
-  LT:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120]}, //-------------------------------------114.Lesotho
-  WZ:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120]}, //-------------------------------------115.eSwatini
-  ZI:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120]}, //-------------------------------------116.Zimbabwe
-  AN:			{'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90]}, //-----------------------------------------------117.Andorra
-  MN:			{'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //-----------------------------118.Mongolia
+  BA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90, 100, 120 ]}, //------------------------------- 108.Bahrain
+  SA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140 ]}, //------------ 109.Saudi Arabia
+  KU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 45, 50, 60, 80, 100, 120 ]}, //------------------------------- 110.Kuwait
+  KG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 20, 40, 50, 60, 90 ]}, //---------------------------------------------- 111.Kyrgyzstan
+  WA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 80, 100, 120 ]}, //--------------------------------------------112.Namibia
+  LT:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------113.Lesotho
+  WZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------114.eSwatini
+  ZI:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------115.Zimbabwe
+  AN:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90 ]}, //----------------------------------------------116.Andorra
+  MN:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------117.Mongolia
+  MG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------117.Mongolia - Waze uses MG
+  HO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 25, 40, 50, 60, 80 ]}, //----------------------------------------- 118. Honduras
+  MK:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120, 130 ]}, //---------------------------------- 119. Macedonia
+  YM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140 ]}, //------------------ 120. Yemen
+  MA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //------------------------------- 121. Morocco
+  MO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //------------------------------- 121. Morocco - Waze uses MO
+  SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 50, 70, 90, 120 ]}, //---------------------------------------------122.Sudan
+  VN:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam
+  VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
+  CM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 80, 100 ]}, //---------------------------------------------------------124.Cameroun
 };
 
 function log(message) {
@@ -177,21 +192,21 @@ function log(message) {
   }
 }
 
-// initialize WMESpeedhelper and do some checks
+// wait for wme ready then call WMESpeedhelper_init
 function WMESpeedhelper_bootstrap() {
-  var wazeapi = W || window.W;
-  if(!wazeapi || !wazeapi.map) {
-    setTimeout(WMESpeedhelper_bootstrap, 1000);
-    return;
+  if (typeof W === 'object' && W.userscripts?.state.isReady) {
+    WMESpeedhelper_init();
+  } else {
+    document.addEventListener("wme-ready", WMESpeedhelper_init, {
+      once: true,
+    });
   }
-  WMESpeedhelper_init();
-  log("Start");
-} // Code improvement thanx to @turbopirate
+}
 
 function WMESpeedhelper_init() {
   //create the WMESpeedhelper object
   var WMESpeedhelper = {},
-    editpanel =  $("#edit-panel"),
+    editpanel = $("#edit-panel"),
     mD = document.createElement("div"),
     mC = document.createElement("div"),
     mI = document.createElement("img"),
@@ -211,10 +226,11 @@ function WMESpeedhelper_init() {
     return;
   }
 
+  log("Start");
   // Show friendly message to users of unsupported countries (for now)
   WMESpeedhelper.showMessage = function() {
     // Check if the user hasn't allready asked to hide this message
-    if (localStorage.msgHide != 1) {
+    if (localStorage.msgHide !== 1) {
       // Check if this message isn't allready on screen (bugcheck, can't reproduce myself)
       if (!$("#_cnt").length) {
         mD.id = '_cnt';
@@ -223,7 +239,7 @@ function WMESpeedhelper_init() {
         mD.appendChild(mC);
         mI.style.cssText = 'float:left;margin-right:5px;';
         mI.src = mssimg;
-        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+VERSION+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().abbr+'</b>';
+        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+VERSION+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().getAttribute('abbr')+'</b>';
         mC.onclick = function() {
           localStorage.msgHide = 1;
           $('#_cnt').hide('slow');
@@ -234,7 +250,9 @@ function WMESpeedhelper_init() {
         mD.appendChild(mI);
         mD.appendChild(mT);
         mD.appendChild(cleardiv);
-        $("div.speed-limit-editor").prepend(mD);
+        var $sldiv = $("div.speed-limit-fwd");
+        if ($sldiv.length === 0) { $sldiv = $("div.speed-limit-rev"); }
+        $sldiv.prepend(mD);
       }
     }
   };
@@ -245,18 +263,20 @@ function WMESpeedhelper_init() {
       mD.style.cssText = 'margin:5px 0 10px 0;border:1px solid red;padding:5px;border-radius:5px;position:relative;font-size:90%;background:#FFE7E7';
       mI.style.cssText = 'float:left;margin-right:5px;width:25px;height:25px';
       mI.src = BGa[0];
-      mT.innerHTML = '<b>WME is currently set to imperial. Please change this to metric, if you want to add speedlimits in this country ('+W.model.getTopCountry().abbr+')</b>';
+      mT.innerHTML = '<b>WME is currently set to imperial. Please change this to metric, if you want to add speedlimits in this country ('+W.model.getTopCountry().getAttribute('abbr')+')</b>';
       cleardiv.id = 'cleardiv';
       cleardiv.style.cssText ='clear:both;margin-bottom:5px;';
       mD.appendChild(mI);
       mD.appendChild(mT);
       mD.appendChild(cleardiv);
-      $("div.speed-limit-editor").prepend(mD);
+      var $sldiv = $("div.speed-limit-fwd");
+      if ($sldiv.length === 0) { $sldiv = $("div.speed-limit-rev"); }
+      $sldiv.prepend(mD);
     }
   };
 
   // The big one...
-  WMESpeedhelper.makeSigns = function(reciever) {
+  WMESpeedhelper.makeSigns = function(receiver) {
     // Fix thankx to GyllieGyllie (0.12.1)
     var country = W.model.getTopCountry();
     var countryID;
@@ -267,16 +287,17 @@ function WMESpeedhelper_init() {
       countryID = country.getAttribute("abbr");
     }
 
-    var ABBR =  signConfig[countryID], MPHorKPH = ABBR.ann, ISEMPERIAL = W.model.isImperial;
+    var ABBR =  signConfig[countryID];
 
     // Country code not found? Show user friendly message with info to get his/her country added
     if (typeof ABBR == 'undefined') {
       WMESpeedhelper.showMessage();
       return;
     }
+    var MPHorKPH = ABBR.ann, ISEMPERIAL = W.model.isImperial
 
     // Hide signs if the user's settings are not correct.
-    if(ISEMPERIAL && MPHorKPH == 'kph'){
+    if(ISEMPERIAL && MPHorKPH === 'kph'){
       WMESpeedhelper.showMessage2();
       return;
     }
@@ -328,10 +349,10 @@ function WMESpeedhelper_init() {
           if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("wz-text-input[name=revMaxSpeed]").prop('disabled')) {
             console.log('Changing speed');
             var focusOut = new Event('focusout', {bubbles: true});
-            if ((!ISEMPERIAL && MPHorKPH == 'mph') ||  (ISEMPERIAL && MPHorKPH == 'kph')) {
+            if ((!ISEMPERIAL && MPHorKPH === 'mph') ||  (ISEMPERIAL && MPHorKPH === 'kph')) {
               var ConvertedSpeed = "";
 
-              if (!ISEMPERIAL && MPHorKPH == 'mph') {
+              if (!ISEMPERIAL && MPHorKPH === 'mph') {
                 //convert to kmh
                 ConvertedSpeed = Math.round(allowedspeed * 1.609344); //km/h = mph x 1.609344
                 $("wz-text-input[name=fwdMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
@@ -360,8 +381,14 @@ function WMESpeedhelper_init() {
 
       // Add everything to the stage
       signsholder.appendChild(cleardiv);
-      if (document.querySelector("div.speed-limit-fwd")) {
-        document.querySelector("div.speed-limit-fwd").parentElement.firstChild.insertAdjacentElement("afterend", signsholder);
+      var sldiv;
+      if (receiver === undefined) {
+        sldiv = document.querySelector("div.speed-limit-fwd");
+        if (!sldiv) { document.querySelector("div.speed-limit-rev"); }
+      }
+      else { sldiv = receiver; }
+      if (sldiv) {
+        sldiv.parentElement.firstChild.insertAdjacentElement("afterend", signsholder);
       }
 
       // Lock warning (0.4.8)
@@ -449,8 +476,8 @@ function WMESpeedhelper_init() {
         addsign.style.cssText = 'cursor:pointer;float:left;width:'+dims[1]+'px;height:'+dims[0]+'px;background-image: url(\''+ bgimage + '\');';
 
         addsign.onclick = function() {
-          $("wz-text-input.max-speed").val(allowedspeed).change().focusout();
-          $("wz-text-input[name='validated']").prop('checked', true).change().focusout();
+          var focusOut = new Event('focusout', {bubbles: true});
+          $("wz-text-input.max-speed").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
         };
 
         // The speed value
@@ -489,6 +516,7 @@ function WMESpeedhelper_init() {
         if (addedNode.nodeType === Node.ELEMENT_NODE) {
           console.log('Checking for nodes');
           var speedlimitDiv = addedNode.querySelector('div.speed-limit-fwd');
+          if (!speedlimitDiv) { speedlimitDiv = addedNode.querySelector('div.speed-limit-rev'); }
           var speedcameraDiv = addedNode.querySelector('wz-text-input.max-speed');
 
           if (speedlimitDiv) {

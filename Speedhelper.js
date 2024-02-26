@@ -180,6 +180,11 @@ var signConfig = {
   VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
 };
 
+const options = loadOptions();
+
+// Now validate the options are ok
+validateOptions(options);
+
 function log(message) {
   if (typeof message === 'string') {
     console.log('WMESpeedhelper: ' + message);
@@ -283,7 +288,7 @@ function WMESpeedhelper_init() {
       countryID = country.getAttribute("abbr");
     }
 
-    var ABBR =  signConfig[countryID];
+    var ABBR = signConfig[countryID];
 
     // Country code not found? Show user friendly message with info to get his/her country added
     if (typeof ABBR == 'undefined') {
@@ -330,42 +335,16 @@ function WMESpeedhelper_init() {
         addsign.id = 'sign'+allowedspeed;
 
         // Get width/height of sign background img
-        addsign.style.cssText = 'cursor:pointer;float:left;width:'+dims[1]+'px;height:'+dims[0]+'px;background-image: url(\''+ bgimage + '\');';
+        var scale = options.iconScale / 100;
+        addsign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgimage + '\');background-size:contain;';
 
         // Credits for some of these parts go to t0cableguy & Rickzabel
-        addsign.onclick =  function() {
-          // Disable & remove new WME verify buttons.
-          // Tried to find the most simple & short code as possible, that works.
-          // First remove the "disabled" property, followed by a click action
-          // on the edit buttons seems to do the trick
-          $("wz-text-input[name=fwdMaxSpeed]").prop('disabled', false);
-          $("wz-text-input[name=revMaxSpeed]").prop('disabled', false);
-          $("button.edit-btn").click();
-
-          if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("wz-text-input[name=revMaxSpeed]").prop('disabled')) {
-            console.log('Changing speed');
-            var focusOut = new Event('focusout', {bubbles: true});
-            if ((!ISEMPERIAL && MPHorKPH === 'mph') ||  (ISEMPERIAL && MPHorKPH === 'kph')) {
-              var ConvertedSpeed = "";
-
-              if (!ISEMPERIAL && MPHorKPH === 'mph') {
-                //convert to kmh
-                ConvertedSpeed = Math.round(allowedspeed * 1.609344); //km/h = mph x 1.609344
-                $("wz-text-input[name=fwdMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
-                $("wz-text-input[name=revMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
-              }
-            } else {
-              //waze is set to the correct country unit
-              $("wz-text-input[name=fwdMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
-              $("wz-text-input[name=revMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
-            }
-          }
-        };
+        addsign.onclick = WMESpeedhelper.clickSegment;
 
         // The speed value
         var speedvalue = document.createElement("div");
         speedvalue.id = 'spd_'+ allowedspeed;
-        speedvalue.style.cssText = 'text-align:center;margin-top:'+dims[2]+'px;font-size:10px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
+        speedvalue.style.cssText = 'text-align:center;margin-top:'+(dims[2] - (dims[2]*2*(1 - scale)))+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
         speedvalue.innerHTML = allowedspeed;
         addsign.appendChild(speedvalue);
         signsholder.appendChild(addsign);
@@ -401,19 +380,6 @@ function WMESpeedhelper_init() {
       /*****************
        * SETTINGS PANEL *
        *****************/
-      var _gear = document.createElement("span");
-      _gear.onclick = function() {
-        $('#_spanel').toggle('fast');
-      };
-      _gear.style.cssText = 'cursor:pointer;float:right;background-image:url("'+settingsimg+'");width:12px;height:12px;';
-      _gear.title = "Settings";
-
-      var _spanel = document.createElement("div");
-      _spanel.id = "_spanel";
-      _spanel.style.cssText = "margin-top:5px;padding:5px;display:none;clear:both;border:1px solid #999;border-radius:5px;";
-      $("div.speed-limit-editor").append(_spanel);
-      $(_spanel).html('<p>Reserved for future updates</p>');
-
       // Clearfields
       var _clear = document.createElement("span");
       _clear.title = "Clear values";
@@ -424,7 +390,7 @@ function WMESpeedhelper_init() {
         }
       };
       _clear.style.cssText = 'cursor:pointer;float:right;background-image:url("'+ clearimg +'");width:12px;height:12px;';
-      $("div.speed-limit-editor").append(_gear).append(_clear);
+      sldiv.append(_clear);
     }
   };
 
@@ -501,6 +467,35 @@ function WMESpeedhelper_init() {
     }
   };
 
+  WMESpeedhelper.clickSegment = function() {
+    // Disable & remove new WME verify buttons.
+    // Tried to find the most simple & short code as possible, that works.
+    // First remove the "disabled" property, followed by a click action
+    // on the edit buttons seems to do the trick
+    $("wz-text-input[name=fwdMaxSpeed]").prop('disabled', false);
+    $("wz-text-input[name=revMaxSpeed]").prop('disabled', false);
+    $("button.edit-btn").click();
+
+    if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("wz-text-input[name=revMaxSpeed]").prop('disabled')) {
+      console.log('Changing speed');
+      var focusOut = new Event('focusout', {bubbles: true});
+      if ((!ISEMPERIAL && MPHorKPH === 'mph') ||  (ISEMPERIAL && MPHorKPH === 'kph')) {
+        var ConvertedSpeed = "";
+
+        if (!ISEMPERIAL && MPHorKPH === 'mph') {
+          //convert to kmh
+          ConvertedSpeed = Math.round(allowedspeed * 1.609344); //km/h = mph x 1.609344
+          $("wz-text-input[name=fwdMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
+          $("wz-text-input[name=revMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
+        }
+      } else {
+        //waze is set to the correct country unit
+        $("wz-text-input[name=fwdMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
+        $("wz-text-input[name=revMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
+      }
+    }
+  }
+
   // check for changes in the edit-panel
   var speedlimitsObserver = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
@@ -531,5 +526,118 @@ function WMESpeedhelper_init() {
   WMESpeedhelper.makeSigns();
   WMESpeedhelper.makeCameraSigns();
 
+  constructSettings();
+
 }
 setTimeout(WMESpeedhelper_bootstrap, 3000);
+
+function renderSigns() {
+
+  //Get the correct list of speedsigns to make
+  ABBR.spd.forEach(function(speed) {
+    var bgimage = ABBR.sgn[0];
+    var allowedspeed = speed;
+    var dims = ABBR.sgn[1].split('|');
+    var hidden = '';
+
+    //check per speedvalue if we need a special image
+    try {
+      if(Array.isArray(speed)) {
+        allowedspeed = speed[0];
+        bgimage = speed[1][0];
+        dims = speed[1][1].split('|');
+        hidden = 'visibility:hidden;';
+      }
+    } catch (e) {
+      //
+    }
+
+    // The sign background
+    var addsign = document.createElement("div");
+    addsign.id = 'sign'+allowedspeed;
+
+    // Get width/height of sign background img
+    var scale = options.iconScale / 100;
+    addsign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgimage + '\');background-size:contain;';
+
+    // Credits for some of these parts go to t0cableguy & Rickzabel
+    addsign.onclick = WMESpeedhelper.clickSegment;
+
+    // The speed value
+    var speedvalue = document.createElement("div");
+    speedvalue.id = 'spd_'+ allowedspeed;
+    speedvalue.style.cssText = 'text-align:center;margin-top:'+(dims[2] - (dims[2]*2*(1 - scale)))+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
+    speedvalue.innerHTML = allowedspeed;
+    addsign.appendChild(speedvalue);
+    signsholder.appendChild(addsign);
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////
+//// Option Logic
+////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function constructSettings() {
+
+  // -- Setup the tab for the script
+  const scriptTab = $('<li><a href="#speedhelper-settings" data-toggle="tab" id="CommentsTab">SpeedHelper</a></li>');
+  $("#user-tabs ul.nav-tabs").first().append(scriptTab);
+
+  // -- Setup the pane for our content
+  scriptContentPane = $('<div class="tab-pane" id="speedhelper-settings"></div>');
+  $("#user-info div.tab-content").first().append(scriptContentPane);
+
+  addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
+}
+
+function getDefaultOptions() {
+  return {
+    iconScale: 100
+  }
+}
+
+function loadOptions() {
+  let text = localStorage.getItem("SpeedHelper-Options");
+  let options;
+
+  if (text) {
+    options = JSON.parse(text);
+  } else {
+    options = getDefaultOptions();
+  }
+
+  return options;
+}
+
+function validateOptions(options) {
+  const defaultOptions = getDefaultOptions();
+
+  // Add missing options
+  for (let key in defaultOptions) {
+    if (!(key in options)) {
+      options[key] = defaultOptions[key]
+    }
+  }
+}
+
+function saveOptions(options) {
+  const optionsJson = JSON.stringify(options);
+  localStorage.setItem("SpeedHelper-Options", optionsJson);
+}
+
+function changeText(event) {
+  options[event.target.id] = event.target.value;
+  saveOptions(options);
+}
+
+function addTextNumberSettings(container, title, label, name, step = 1) {
+  const currentValue = options[name];
+
+  const textInput = $('<wz-text-input type="number" min="0" max="999" step="' + step + '" id="' + name + '" value="' + currentValue + '"></wz-text-input>');
+  const optionHtml = $('<div class="urcom-option"><span Title="' + title + '">' + label + '</span></div>').append(textInput);
+
+  container.append(optionHtml);
+
+  textInput.on('change', changeText);
+}

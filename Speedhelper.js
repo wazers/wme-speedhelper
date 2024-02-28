@@ -13,6 +13,7 @@
 // @icon		       data:image/png;base64,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
 // @downloadURL    https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.user.js
 // @updateURL      https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.meta.js
+// @require         https://greasyfork.org/scripts/24851-wazewrap/code/WazeWrap.js
 // ==/UserScript==
 /* Changelog
 
@@ -21,7 +22,15 @@
 /* global I18n */
 /* global $ */
 
-var VERSION = '0.12.4';
+const ScriptName = GM_info.script.name;
+const ScriptVersion = GM_info.script.version;
+
+let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Small code refactor to support script options";
+ChangeLog = ChangeLog + "<br />" + "- Small code cleanup to avoid duplicate code";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -240,7 +249,7 @@ function WMESpeedhelper_init() {
         mD.appendChild(mC);
         mI.style.cssText = 'float:left;margin-right:5px;';
         mI.src = mssimg;
-        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+VERSION+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().getAttribute('abbr')+'</b>';
+        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+ScriptVersion+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().getAttribute('abbr')+'</b>';
         mC.onclick = function() {
           localStorage.msgHide = 1;
           $('#_cnt').hide('slow');
@@ -411,6 +420,7 @@ function WMESpeedhelper_init() {
   WMESpeedhelper.makeCameraSigns();
 
   constructSettings();
+  displayChangelog();
 
 }
 setTimeout(WMESpeedhelper_bootstrap, 3000);
@@ -441,8 +451,7 @@ function clickSegmentSpeed(ISEMPERIAL, MPHorKPH, allowedSpeed) {
   revSpeed.prop('disabled', false);
   $("button.edit-btn").click();
 
-  if(!fwdSpeed.prop('disabled') && !revSpeed.prop('disabled')) {
-    console.log('Changing speed');
+  if (!fwdSpeed.prop('disabled') && !revSpeed.prop('disabled')) {
     const focusOut = new Event('focusout', {bubbles: true});
     if ((!ISEMPERIAL && MPHorKPH === 'mph') || (ISEMPERIAL && MPHorKPH === 'kph')) {
       if (!ISEMPERIAL && MPHorKPH === 'mph') {
@@ -461,7 +470,7 @@ function clickSegmentSpeed(ISEMPERIAL, MPHorKPH, allowedSpeed) {
 
 function renderSigns(activeConfig, holder, click) {
 
-  //Get the correct list of speed signs to make
+  // Get the correct list of speed signs to make
   activeConfig.spd.forEach((speed) => {
     let bgImage = activeConfig.sgn[0];
     let allowedSpeed = speed;
@@ -498,6 +507,26 @@ function renderSigns(activeConfig, holder, click) {
   });
 }
 
+function displayChangelog() {
+  if (!WazeWrap.Interface) {
+    setTimeout(displayChangelog, 1000);
+    return;
+  }
+
+  // Alert the user in URComment version updates
+  if (options.lastAnnouncedVersion === ScriptVersion) {
+    log('Version: ' + ScriptVersion);
+  } else {
+    WazeWrap.Interface.ShowScriptUpdate(ScriptName, ScriptVersion, ChangeLog + "<br /><br />", "https://github.com/wazers/wme-speedhelper");
+
+    const updateName = "#wmespeedhelper" + ScriptVersion.replaceAll(".", "");
+    $(updateName + " .WWSUFooter a").text("Github")
+
+    options.lastAnnouncedVersion = ScriptVersion;
+    saveOptions(options);
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////
 //// Option Logic
@@ -505,19 +534,27 @@ function renderSigns(activeConfig, holder, click) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function constructSettings() {
 
-  // -- Setup the tab for the script
-  const scriptTab = $('<li><a href="#speedhelper-settings" data-toggle="tab" id="CommentsTab">SpeedHelper</a></li>');
-  $("#user-tabs ul.nav-tabs").first().append(scriptTab);
+  // -- Set up the tab for the script
+  const { tabLabel, tabPane } = W.userscripts.registerSidebarTab('SpeedHelper');
+  tabLabel.innerText = 'SpeedHelper';
+  tabLabel.title = 'Speed Helper Settings';
 
-  // -- Setup the pane for our content
-  scriptContentPane = $('<div class="tab-pane" id="speedhelper-settings"></div>');
-  $("#user-info div.tab-content").first().append(scriptContentPane);
+  W.userscripts.waitForElementConnected(tabPane).then(() => {
+    tabPane.innerHTML = '<div id="speedhelper-settings"></div>';
 
-  addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
+    scriptContentPane = $('#speedhelper-settings');
+
+    scriptContentPane.append(`<h2 style="margin-top: 0;">SpeedHelper</h2>`);
+    scriptContentPane.append(`<span>Current Version: <b>${ScriptVersion}</b></span>`);
+
+    addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
+  });
+
 }
 
 function getDefaultOptions() {
   return {
+    lastAnnouncedVersion: '',
     iconScale: 100
   }
 }
@@ -560,7 +597,7 @@ function addTextNumberSettings(container, title, label, name, step = 1) {
   const currentValue = options[name];
 
   const textInput = $('<wz-text-input type="number" min="0" max="999" step="' + step + '" id="' + name + '" value="' + currentValue + '"></wz-text-input>');
-  const optionHtml = $('<div class="urcom-option"><span Title="' + title + '">' + label + '</span></div>').append(textInput);
+  const optionHtml = $('<div style="margin-top: 10px;"><span Title="' + title + '">' + label + '</span></div>').append(textInput);
 
   container.append(optionHtml);
 

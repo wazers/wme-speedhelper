@@ -13,6 +13,7 @@
 // @icon		       data:image/png;base64,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
 // @downloadURL    https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.user.js
 // @updateURL      https://update.greasyfork.org/scripts/13774/WME%20Speedhelper.meta.js
+// @require         https://greasyfork.org/scripts/24851-wazewrap/code/WazeWrap.js
 // ==/UserScript==
 /* Changelog
 
@@ -21,7 +22,15 @@
 /* global I18n */
 /* global $ */
 
-var VERSION = '0.12.4';
+const ScriptName = GM_info.script.name;
+const ScriptVersion = GM_info.script.version;
+
+let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Small code refactor to support script options";
+ChangeLog = ChangeLog + "<br />" + "- Small code cleanup to avoid duplicate code";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -180,6 +189,11 @@ var signConfig = {
   VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
 };
 
+const options = loadOptions();
+
+// Now validate the options are ok
+validateOptions(options);
+
 function log(message) {
   if (typeof message === 'string') {
     console.log('WMESpeedhelper: ' + message);
@@ -235,7 +249,7 @@ function WMESpeedhelper_init() {
         mD.appendChild(mC);
         mI.style.cssText = 'float:left;margin-right:5px;';
         mI.src = mssimg;
-        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+VERSION+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().getAttribute('abbr')+'</b>';
+        mT.innerHTML = '<b><a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">WME Speedhelper '+ScriptVersion+'</a></b><br>Country missing? Follow <a href="https://greasyfork.org/en/scripts/13774-wme-speedhelper" target="_blank">this</a> link Your country code: <b>'+W.model.getTopCountry().getAttribute('abbr')+'</b>';
         mC.onclick = function() {
           localStorage.msgHide = 1;
           $('#_cnt').hide('slow');
@@ -273,27 +287,18 @@ function WMESpeedhelper_init() {
 
   // The big one...
   WMESpeedhelper.makeSigns = function(receiver) {
-    // Fix thankx to GyllieGyllie (0.12.1)
-    var country = W.model.getTopCountry();
-    var countryID;
-
-    if (country.hasOwnProperty("abbr")) {
-      countryID = country.abbr;
-    } else {
-      countryID = country.getAttribute("abbr");
-    }
-
-    var ABBR =  signConfig[countryID];
+    const activeConfig = findCountyConfig();
 
     // Country code not found? Show user friendly message with info to get his/her country added
-    if (typeof ABBR == 'undefined') {
+    if (typeof activeConfig == 'undefined') {
       WMESpeedhelper.showMessage();
       return;
     }
-    var MPHorKPH = ABBR.ann, ISEMPERIAL = W.model.isImperial
+
+    const MPHorKPH = activeConfig.ann, ISEMPERIAL = W.model.isImperial;
 
     // Hide signs if the user's settings are not correct.
-    if(ISEMPERIAL && MPHorKPH === 'kph'){
+    if (ISEMPERIAL && MPHorKPH === 'kph'){
       WMESpeedhelper.showMessage2();
       return;
     }
@@ -306,70 +311,7 @@ function WMESpeedhelper_init() {
       var signsholder = document.createElement("div");
       signsholder.id = 'signsholder';
 
-      //Get the correct list of speedsigns to make
-      ABBR.spd.forEach(function(speed) {
-        var bgimage = ABBR.sgn[0];
-        var allowedspeed = speed;
-        var dims = ABBR.sgn[1].split('|');
-        var hidden = '';
-
-        //check per speedvalue if we need a special image
-        try {
-          if(Array.isArray(speed)) {
-            allowedspeed = speed[0];
-            bgimage = speed[1][0];
-            dims = speed[1][1].split('|');
-            hidden = 'visibility:hidden;';
-          }
-        } catch (e) {
-          //
-        }
-
-        // The sign background
-        var addsign = document.createElement("div");
-        addsign.id = 'sign'+allowedspeed;
-
-        // Get width/height of sign background img
-        addsign.style.cssText = 'cursor:pointer;float:left;width:'+dims[1]+'px;height:'+dims[0]+'px;background-image: url(\''+ bgimage + '\');';
-
-        // Credits for some of these parts go to t0cableguy & Rickzabel
-        addsign.onclick =  function() {
-          // Disable & remove new WME verify buttons.
-          // Tried to find the most simple & short code as possible, that works.
-          // First remove the "disabled" property, followed by a click action
-          // on the edit buttons seems to do the trick
-          $("wz-text-input[name=fwdMaxSpeed]").prop('disabled', false);
-          $("wz-text-input[name=revMaxSpeed]").prop('disabled', false);
-          $("button.edit-btn").click();
-
-          if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("wz-text-input[name=revMaxSpeed]").prop('disabled')) {
-            console.log('Changing speed');
-            var focusOut = new Event('focusout', {bubbles: true});
-            if ((!ISEMPERIAL && MPHorKPH === 'mph') ||  (ISEMPERIAL && MPHorKPH === 'kph')) {
-              var ConvertedSpeed = "";
-
-              if (!ISEMPERIAL && MPHorKPH === 'mph') {
-                //convert to kmh
-                ConvertedSpeed = Math.round(allowedspeed * 1.609344); //km/h = mph x 1.609344
-                $("wz-text-input[name=fwdMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
-                $("wz-text-input[name=revMaxSpeed]").val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
-              }
-            } else {
-              //waze is set to the correct country unit
-              $("wz-text-input[name=fwdMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
-              $("wz-text-input[name=revMaxSpeed]").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
-            }
-          }
-        };
-
-        // The speed value
-        var speedvalue = document.createElement("div");
-        speedvalue.id = 'spd_'+ allowedspeed;
-        speedvalue.style.cssText = 'text-align:center;margin-top:'+dims[2]+'px;font-size:10px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
-        speedvalue.innerHTML = allowedspeed;
-        addsign.appendChild(speedvalue);
-        signsholder.appendChild(addsign);
-      });
+      renderSigns(activeConfig, signsholder, (speed) => clickSegmentSpeed(ISEMPERIAL, MPHorKPH, speed));
 
       // CSS Clear after the floats
       var cleardiv = document.createElement("div");
@@ -401,30 +343,19 @@ function WMESpeedhelper_init() {
       /*****************
        * SETTINGS PANEL *
        *****************/
-      var _gear = document.createElement("span");
-      _gear.onclick = function() {
-        $('#_spanel').toggle('fast');
-      };
-      _gear.style.cssText = 'cursor:pointer;float:right;background-image:url("'+settingsimg+'");width:12px;height:12px;';
-      _gear.title = "Settings";
-
-      var _spanel = document.createElement("div");
-      _spanel.id = "_spanel";
-      _spanel.style.cssText = "margin-top:5px;padding:5px;display:none;clear:both;border:1px solid #999;border-radius:5px;";
-      $("div.speed-limit-editor").append(_spanel);
-      $(_spanel).html('<p>Reserved for future updates</p>');
-
-      // Clearfields
-      var _clear = document.createElement("span");
-      _clear.title = "Clear values";
-      _clear.onclick = function() {
-        if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("input[name=revMaxSpeed]").prop('disabled')) {
-          $("wz-text-input[name=fwdMaxSpeed]").val('').change().focusout();
-          $("wz-text-input[name=revMaxSpeed]").val('').change().focusout();
-        }
-      };
-      _clear.style.cssText = 'cursor:pointer;float:right;background-image:url("'+ clearimg +'");width:12px;height:12px;';
-      $("div.speed-limit-editor").append(_gear).append(_clear);
+      if (sldiv) {
+        // Clearfields
+        var _clear = document.createElement("span");
+        _clear.title = "Clear values";
+        _clear.onclick = function() {
+          if(!$("wz-text-input[name=fwdMaxSpeed]").prop('disabled') && !$("input[name=revMaxSpeed]").prop('disabled')) {
+            $("wz-text-input[name=fwdMaxSpeed]").val('').change().focusout();
+            $("wz-text-input[name=revMaxSpeed]").val('').change().focusout();
+          }
+        };
+        _clear.style.cssText = 'cursor:pointer;float:right;background-image:url("'+ clearimg +'");width:12px;height:12px;';
+        sldiv.append(_clear);
+      }
     }
   };
 
@@ -434,55 +365,12 @@ function WMESpeedhelper_init() {
     if (!$("#camsignsholder").length) {
       var camsignsholder = document.createElement("div");
 
-      var country = W.model.getTopCountry();
-      var countryID;
-
-      if (country.hasOwnProperty("abbr")) {
-        countryID = country.abbr;
-      } else {
-        countryID = country.getAttribute("abbr");
-      }
-      var ABBR =  signConfig[countryID];
+      const activeConfig = findCountyConfig();
       camsignsholder.id = 'camsignsholder';
 
-      //Get the correct list of speedsigns to make
-      ABBR.spd.forEach(function(speed) {
-        var bgimage = ABBR.sgn[0];
-        var allowedspeed = speed;
-        var dims = ABBR.sgn[1].split('|');
-        var hidden = '';
-
-        //check per speedvalue if we need a special image
-        try {
-          if(Array.isArray(speed)) {
-            allowedspeed = speed[0];
-            bgimage = speed[1][0];
-            dims = speed[1][1].split('|');
-            hidden = 'visibility:hidden;';
-          }
-        } catch (e) {
-          //
-        }
-
-        // The sign background
-        var addsign = document.createElement("div");
-        addsign.id = 'sign'+allowedspeed;
-
-        // Get width/height of sign background img
-        addsign.style.cssText = 'cursor:pointer;float:left;width:'+dims[1]+'px;height:'+dims[0]+'px;background-image: url(\''+ bgimage + '\');';
-
-        addsign.onclick = function() {
-          var focusOut = new Event('focusout', {bubbles: true});
-          $("wz-text-input.max-speed").val(allowedspeed).get(0)?.dispatchEvent(focusOut);
-        };
-
-        // The speed value
-        var speedvalue = document.createElement("div");
-        speedvalue.id = 'spd_'+ allowedspeed;
-        speedvalue.style.cssText = 'text-align:center;margin-top:'+dims[2]+'px;font-size:10px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
-        speedvalue.innerHTML = allowedspeed;
-        addsign.appendChild(speedvalue);
-        camsignsholder.appendChild(addsign);
+      renderSigns(activeConfig, camsignsholder, (speed) => {
+        var focusOut = new Event('focusout', {bubbles: true});
+        $("wz-text-input.max-speed").val(speed).get(0)?.dispatchEvent(focusOut);
       });
 
       // Add all this to the screen
@@ -531,5 +419,187 @@ function WMESpeedhelper_init() {
   WMESpeedhelper.makeSigns();
   WMESpeedhelper.makeCameraSigns();
 
+  constructSettings();
+  displayChangelog();
+
 }
 setTimeout(WMESpeedhelper_bootstrap, 3000);
+
+function findCountyConfig() {
+  // Fix thanks to GyllieGyllie (0.12.1)
+  const country = W.model.getTopCountry();
+  let countryID;
+
+  if (country.hasOwnProperty("abbr")) {
+    countryID = country.abbr;
+  } else {
+    countryID = country.getAttribute("abbr");
+  }
+
+  return signConfig[countryID];
+}
+
+function clickSegmentSpeed(ISEMPERIAL, MPHorKPH, allowedSpeed) {
+  const fwdSpeed = $("wz-text-input[name=fwdMaxSpeed]");
+  const revSpeed = $("wz-text-input[name=revMaxSpeed]");
+
+  // Disable & remove new WME verify buttons.
+  // Tried to find the most simple & short code as possible, that works.
+  // First remove the "disabled" property, followed by a click action
+  // on the edit buttons seems to do the trick
+  fwdSpeed.prop('disabled', false);
+  revSpeed.prop('disabled', false);
+  $("button.edit-btn").click();
+
+  if (!fwdSpeed.prop('disabled') && !revSpeed.prop('disabled')) {
+    const focusOut = new Event('focusout', {bubbles: true});
+    if ((!ISEMPERIAL && MPHorKPH === 'mph') || (ISEMPERIAL && MPHorKPH === 'kph')) {
+      if (!ISEMPERIAL && MPHorKPH === 'mph') {
+        //convert to kmh
+        const ConvertedSpeed = Math.round(allowedSpeed * 1.609344); //km/h = mph x 1.609344
+        fwdSpeed.val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
+        revSpeed.val(ConvertedSpeed).get(0)?.dispatchEvent(focusOut);
+      }
+    } else {
+      // waze is set to the correct country unit
+      fwdSpeed.val(allowedSpeed).get(0)?.dispatchEvent(focusOut);
+      revSpeed.val(allowedSpeed).get(0)?.dispatchEvent(focusOut);
+    }
+  }
+}
+
+function renderSigns(activeConfig, holder, click) {
+
+  // Get the correct list of speed signs to make
+  activeConfig.spd.forEach((speed) => {
+    let bgImage = activeConfig.sgn[0];
+    let allowedSpeed = speed;
+    let dims = activeConfig.sgn[1].split('|');
+
+    // Check per speed value if we need a special image
+    try {
+      if (Array.isArray(speed)) {
+        allowedSpeed = speed[0];
+        bgImage = speed[1][0];
+        dims = speed[1][1].split('|');
+      }
+    } catch (e) {
+    }
+
+    // The sign background
+    const sign = document.createElement("div");
+    sign.id = 'sign'+allowedSpeed;
+
+    // Get width/height of sign background img
+    const scale = options.iconScale / 100;
+    sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgImage + '\');background-size:contain;';
+
+    // Credits for some of these parts go to t0cableguy & Rickzabel
+    sign.onclick = () => click(allowedSpeed);
+
+    // The speed value
+    const speedValue = document.createElement("div");
+    speedValue.id = 'spd_'+ allowedSpeed;
+    speedValue.style.cssText = 'text-align:center;margin-top:'+(dims[2] - (dims[2]*2*(1 - scale)))+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
+    speedValue.innerHTML = allowedSpeed;
+    sign.appendChild(speedValue);
+    holder.appendChild(sign);
+  });
+}
+
+function displayChangelog() {
+  if (!WazeWrap.Interface) {
+    setTimeout(displayChangelog, 1000);
+    return;
+  }
+
+  // Alert the user in URComment version updates
+  if (options.lastAnnouncedVersion === ScriptVersion) {
+    log('Version: ' + ScriptVersion);
+  } else {
+    WazeWrap.Interface.ShowScriptUpdate(ScriptName, ScriptVersion, ChangeLog + "<br /><br />", "https://github.com/wazers/wme-speedhelper");
+
+    const updateName = "#wmespeedhelper" + ScriptVersion.replaceAll(".", "");
+    $(updateName + " .WWSUFooter a").text("Github")
+
+    options.lastAnnouncedVersion = ScriptVersion;
+    saveOptions(options);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////
+//// Option Logic
+////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function constructSettings() {
+
+  // -- Set up the tab for the script
+  const { tabLabel, tabPane } = W.userscripts.registerSidebarTab('SpeedHelper');
+  tabLabel.innerText = 'SpeedHelper';
+  tabLabel.title = 'Speed Helper Settings';
+
+  W.userscripts.waitForElementConnected(tabPane).then(() => {
+    tabPane.innerHTML = '<div id="speedhelper-settings"></div>';
+
+    scriptContentPane = $('#speedhelper-settings');
+
+    scriptContentPane.append(`<h2 style="margin-top: 0;">SpeedHelper</h2>`);
+    scriptContentPane.append(`<span>Current Version: <b>${ScriptVersion}</b></span>`);
+
+    addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
+  });
+
+}
+
+function getDefaultOptions() {
+  return {
+    lastAnnouncedVersion: '',
+    iconScale: 100
+  }
+}
+
+function loadOptions() {
+  let text = localStorage.getItem("SpeedHelper-Options");
+  let options;
+
+  if (text) {
+    options = JSON.parse(text);
+  } else {
+    options = getDefaultOptions();
+  }
+
+  return options;
+}
+
+function validateOptions(options) {
+  const defaultOptions = getDefaultOptions();
+
+  // Add missing options
+  for (let key in defaultOptions) {
+    if (!(key in options)) {
+      options[key] = defaultOptions[key]
+    }
+  }
+}
+
+function saveOptions(options) {
+  const optionsJson = JSON.stringify(options);
+  localStorage.setItem("SpeedHelper-Options", optionsJson);
+}
+
+function changeText(event) {
+  options[event.target.id] = event.target.value;
+  saveOptions(options);
+}
+
+function addTextNumberSettings(container, title, label, name, step = 1) {
+  const currentValue = options[name];
+
+  const textInput = $('<wz-text-input type="number" min="0" max="999" step="' + step + '" id="' + name + '" value="' + currentValue + '"></wz-text-input>');
+  const optionHtml = $('<div style="margin-top: 10px;"><span Title="' + title + '">' + label + '</span></div>').append(textInput);
+
+  container.append(optionHtml);
+
+  textInput.on('change', changeText);
+}

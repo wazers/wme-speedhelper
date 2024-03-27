@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.8
+// @version        0.12.9
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,7 +29,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fix sign for Nepal";
+ChangeLog = ChangeLog + "<br />" + "- Added Fiji";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -187,6 +187,7 @@ var signConfig = {
   SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 50, 70, 90, 120 ]}, //---------------------------------------------122.Sudan
   VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
   NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 40, 50, 60, 70, 80 ]}, //------------------------------------124. Nepal
+  FJ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------125. Fiji
 };
 
 const options = loadOptions();

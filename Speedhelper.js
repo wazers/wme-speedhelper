@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.10
+// @version        0.12.11
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -30,6 +30,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 ChangeLog = ChangeLog + "<br />" + "- Added Gibraltar";
+ChangeLog = ChangeLog + "<br />" + "- Added Extra Sign for Finland";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -114,7 +115,7 @@ var signConfig = {
   VE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 15, 30, 40, 50, 60, 70, 90, 120]}, //------------------------------------- 49.Venezuela
   RP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 100, 80, 60, 50, 40, 30, 20, 15]}, //------------------------------------- 50.Philippines
   KZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20,40, 60, 100, 110, 140]}, //-------------------------------------------- 51.Kazakhstan
-  FI:         {'sgn': BGd, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 100, 120 ]}, //------------------------- 52.Finland
+  FI:         {'sgn': BGd, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //--------------------- 52.Finland
   IL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60 ,70, 80, 90 ,100, 110, 120, 130]}, //---------------------- 53.Israel
   TC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 70, 80, 90, 100, 120, 140]}, //------------------------------- 54.United Arab Emirates
   TW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //----------------- 55.Taiwan

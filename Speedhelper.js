@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.11
+// @version        0.12.12
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,8 +29,9 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Gibraltar";
-ChangeLog = ChangeLog + "<br />" + "- Added Extra Sign for Finland";
+ChangeLog = ChangeLog + "<br />" + "- Updated Sudan";
+ChangeLog = ChangeLog + "<br />" + "- Added South Sudan";
+ChangeLog = ChangeLog + "<br />" + "- Added Thailand";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -185,11 +186,13 @@ var signConfig = {
   MK:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120, 130 ]}, //---------------------------------- 119. Macedonia
   YM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140 ]}, //------------------ 120. Yemen
   MO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //------------------------------- 121. Morocco - Waze uses MO
-  SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 50, 70, 90, 120 ]}, //---------------------------------------------122.Sudan
+  SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 70, 120 ]}, //-----------------------------------------------------122.Sudan
   VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
   NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 40, 50, 60, 70, 80 ]}, //------------------------------------124. Nepal
   FJ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------125. Fiji
   GI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50 ]}, //------------------------------------------------------126. Gibraltar
+  SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //----------------------------------------------------127. South Sudan
+  TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------128. Thailand
 };
 
 const options = loadOptions();

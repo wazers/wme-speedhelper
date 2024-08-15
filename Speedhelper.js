@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.12
+// @version        0.12.13
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,9 +29,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Updated Sudan";
-ChangeLog = ChangeLog + "<br />" + "- Added South Sudan";
-ChangeLog = ChangeLog + "<br />" + "- Added Thailand";
+ChangeLog = ChangeLog + "<br />" + "- Fixed logic to automatically click 'verify speed limit' button";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -455,7 +453,7 @@ function clickSegmentSpeed(ISEMPERIAL, MPHorKPH, allowedSpeed) {
   // on the edit buttons seems to do the trick
   fwdSpeed.prop('disabled', false);
   revSpeed.prop('disabled', false);
-  $("button.edit-btn").click();
+  $(".verify-btn").click();
 
   if (!fwdSpeed.prop('disabled') && !revSpeed.prop('disabled')) {
     const focusOut = new Event('focusout', {bubbles: true});

@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        0.12.14
+// @version        1.0.0
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,13 +26,13 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-//ChangeLog = ChangeLog + "<br /><b>New: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Added icon scaling so you can adjust the size of the icons";
-ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added support for Ghana";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
+//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Fixed logic to automatically click 'verify speed limit' button";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
-WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
+const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
 (function() {
   const wf = document.createElement('script');
   wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
@@ -267,8 +267,8 @@ function showUnsupportedCountry() {
   if (localStorage.msgHide !== 1) {
     if (!$("#_wmesh_msg1").length) {
 
-      const mainDiv =  $('<div id="_wmesh_msg1" style="margin:5px 0 10px 0; border:1px solid red; padding:5px; border-radius:5px; position:relative"></div>');
-      const iconDiv =  $('<div style="cursor:pointer; width:16px; height:16px; position:absolute; right:3px; top:3px; background-image:url(' + errorimg + ');"></div>');
+      const mainDiv = $('<div id="_wmesh_msg1" style="margin:5px 0 10px 0; border:1px solid red; padding:5px; border-radius:5px; position:relative"></div>');
+      const iconDiv = $('<div style="cursor:pointer; width:16px; height:16px; position:absolute; right:3px; top:3px; background-image:url(' + errorimg + ');"></div>');
       iconDiv.on('click', () => {
         localStorage.msgHide = 1;
         $('#_wmesh_msg1').hide('slow');
@@ -453,7 +453,7 @@ function constructSettings() {
 
     tabPane.innerHTML = '<div id="speedhelper-settings"></div>';
 
-    scriptContentPane = $('#speedhelper-settings');
+    const scriptContentPane = $('#speedhelper-settings');
 
     scriptContentPane.append(`<h2 style="margin-top: 0;">SpeedHelper</h2>`);
     scriptContentPane.append(`<span>Current Version: <b>${ScriptVersion}</b></span>`);

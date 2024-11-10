@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.0
+// @version        1.0.1
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,10 +26,11 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
-//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Fixed logic to automatically click 'verify speed limit' button";
+//ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Fixed issue where the script would sometimes error when loading to quickly (thanks to @MapOMatic)";
+ChangeLog = ChangeLog + "<br />" + "- Added Maldives";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -193,6 +194,7 @@ const signConfig = {
   SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //----------------------------------------------------127. South Sudan
   TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------128. Thailand
   GH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 90, 100 ]}, //-----------------------------------------------------129. Ghana
+  MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35 ]}, //--------------------------------------------------130. Maldives
 };
 
 let wmeSDK;
@@ -211,21 +213,19 @@ function log(message) {
 
 // the sdk init function will be available after the WME is initialized
 function WMESpeedhelper_bootstrap() {
-  if (window.getWmeSdk) {
+  if (!document.getElementById('edit-panel') || !wmeSDK.DataModel.Countries.getTopCountry() || !WazeWrap.Ready) {
+    setTimeout(WMESpeedhelper_bootstrap, 250);
+    return;
+  }
+
+  if (wmeSDK.State.isReady) {
     WMESpeedhelper_init();
   } else {
-    document.addEventListener("wme-initialized", () => {
-      WMESpeedhelper_init();
-    }, {
-      once: true,
-    });
+    wmeSDK.Events.once({ eventName: "wme-ready" }).then(WMESpeedhelper_init);
   }
 }
 
 function WMESpeedhelper_init() {
-  // initialize the sdk with your script id and script name
-  wmeSDK = getWmeSdk({scriptId: "wme-speed-helper", scriptName: "Speed Helper"});
-
   log("Start");
 
   // check for changes in the edit-panel
@@ -258,7 +258,11 @@ function WMESpeedhelper_init() {
 
 }
 
-setTimeout(WMESpeedhelper_bootstrap, 3000);
+window.SDK_INITIALIZED.then(() => {
+  // initialize the sdk with your script id and script name
+  wmeSDK = getWmeSdk({scriptId: "wme-speed-helper", scriptName: "Speed Helper"});
+  WMESpeedhelper_bootstrap();
+});
 
 // Show friendly message to users of unsupported countries (for now)
 function showUnsupportedCountry() {

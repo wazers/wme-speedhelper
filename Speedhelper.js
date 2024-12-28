@@ -372,11 +372,19 @@ function clickSegmentSpeed(allowedSpeed) {
   }
 
   selection.ids.forEach(id => {
-    wmeSDK.DataModel.Segments.updateSegment({
-      segmentId: id,
-      fwdSpeedLimit: allowedSpeed,
-      revSpeedLimit: allowedSpeed
-    })
+    try {
+      wmeSDK.DataModel.Segments.updateSegment({
+        segmentId: id,
+        fwdSpeedLimit: allowedSpeed,
+        revSpeedLimit: allowedSpeed
+      })
+    }
+    catch (err) {
+      // function updateSegment is throwing an 'InvalidStateError' if no update is needed; this should be ignored to update the remaining segments
+      if (err.name !== 'InvalidStateError') {
+        console.log(`WMESpeedhelper: error updating segment: ${err.name}: ${err.message}`);
+      }
+    }
   });
 }
 

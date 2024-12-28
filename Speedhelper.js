@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.1
+// @version        1.0.2
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,8 +29,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fixed issue where the script would sometimes error when loading to quickly (thanks to @MapOMatic)";
-ChangeLog = ChangeLog + "<br />" + "- Added Maldives";
+ChangeLog = ChangeLog + "<br />" + "- Fixed issue when a selected segment didn't require an update (thanks to @Uwe4Waze)";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};

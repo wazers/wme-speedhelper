@@ -29,7 +29,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fixed issue when a selected segment didn't require an update (thanks to @Uwe4Waze)";
+ChangeLog = ChangeLog + "<br />" + "- Added Tajikistan";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -194,6 +194,7 @@ const signConfig = {
   TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------128. Thailand
   GH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 90, 100 ]}, //-----------------------------------------------------129. Ghana
   MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35 ]}, //--------------------------------------------------130. Maldives
+  TJ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 60, 90, 110 ]}, //-----------------------------------------------------131. Tajikistan
 };
 
 let wmeSDK;

@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.2
+// @version        1.0.3
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -30,6 +30,8 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 ChangeLog = ChangeLog + "<br />" + "- Added Tajikistan";
+ChangeLog = ChangeLog + "<br />" + "- Fixed speeds in Papua New Guinea";
+ChangeLog = ChangeLog + "<br />" + "- Added shared street to Portugal";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -79,7 +81,7 @@ const signConfig = {
   RS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //----------------- 13.Russia
   EZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90 ]}, //----------------------------------------- 14.Czech Republic
   SP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //--------------------------- 15.Spain
-  PO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //-------------------------------- 16.Portugal
+  PO:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //---------------------- 16.Portugal
   DA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 110]}, //------------------------------------- 17.Danmark
   CO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------ 18.Colombia
   LO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //--------------------------- 19.Slovakia
@@ -152,7 +154,7 @@ const signConfig = {
   UP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20, BGh], 30, 40, 50, 90, 110, [130, BGj] ]}, // ----------------- 86.Ukraine
   BK: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 87.Bosnia-Herzegovina
   GR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 88.Greece
-  PP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 130]}, // -------------------------------------------------------- 89.Papua New Guinea
+  PP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 100]}, // -------------------------------------------------------- 89.Papua New Guinea
   MP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 110]}, // ---------------------------------------------------- 90.Mauritius
   //IR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 90, 100, 110, 120]}, // ---------------------------------- 91.Iran
   DR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 60, 100, 120]}, // ----------------------------------- 92.Dominican Republic

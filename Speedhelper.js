@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.3
+// @version        1.0.4
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,12 +26,11 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-//ChangeLog = ChangeLog + "<br /><b>New: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Speedhelper is now using the newly released WME SDK as part of 1 of the first scripts to integrate this.";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added additional 'reset speed' sign. Can be disabled in the options.";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Tajikistan";
-ChangeLog = ChangeLog + "<br />" + "- Fixed speeds in Papua New Guinea";
-ChangeLog = ChangeLog + "<br />" + "- Added shared street to Portugal";
+ChangeLog = ChangeLog + "<br />" + "- Added extra speed to Cyprus";
+ChangeLog = ChangeLog + "<br />" + "- Fixed bug with SDK initialisation";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -48,6 +47,7 @@ const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
 /* Borden base64 */
 const errorimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTEvMjAvMTVnsXrkAAADTUlEQVQ4jW2TW0xbZQCAv3ODnpYWegEGo1wKwzBcxAs6dONSjGMm3kjmnBqjYqLREE2WLDFTIBmbmmxRpzHy4NPi4zRLfNBlZjjtnCEaOwYDJUDcVqC3UzpWTkt7fp80hvk9f/nePkkIwWb+gA5jMXLQjK50Zc2cuKVp4wlX2UevtAYubnal/waWoTI1N38keu7ck2uTl335ZFJCkpE8XlGob4ibgeZvMl7P8MtdO6/dFohDe/Sn0LdzJ457MuHfUYqLkYtsSIqMJASyIiNv30Gm6+G1zNbqvpf6gqF/AwaUXx+/MDdz6KArH4ujVVRAbgPVroMsQz6P6nJiGUnUGj/pR/tTyx2dtW+11t2UAa5Pz34w//GHLitpsG1wkODp0xQ11GOZJpgmzq5uqo8ew76zAxFPUDJxscwzFR4BkGfh/tj58/3Zq9OoFZU0PHsAd00NnWNj6IEApd3duA48g2nXKenpQSl1oceWsUeuPfdp+M9GZf/zA5+lz3x9lxRbAUli+dIlKnt7Ud1uCk1NJH0+VnMmq6EQfw0NUzCSULBQfT4HVf4iNRO50VlIGSi6jup0sj5zlTO7d9N48iRLa2vkCwWsyTArbx/GAaSBm/MLyLm85OjZs0c2zawQsoRmt5NeXCRyeRLh9rBkGBSEwF6i09h+L96GemyAx2bDK4ENkGRJkbM2fVy4PRhT08RmZvH09VE29C6ixEFuahL3hklLby9PhEKUt7VRZln4kHD669Bqtl6Q7W07jqWL9FQiEkHTdUoGBsgXF5EPh0m8M8Tc62/CSoLSqmqaR4ZxaRpenxfbgw8lCy2Nx5Uv3xuNXEll7shO/HI38Rjr09NImkriyCgOy0JZTZM4+x3C7SY+epTaLZWsdwXJPNV/6jF/9ReSEIKzmcKWpbHPF9OHDxUr6xksoAiQJAmnpuEWAqeq4G9uRr7nPpZeeDG10NqybV+5Ly4DPGJXlsv79u51v38iK22/EwmwACEEIpdD2tjApmncan8A49XX4qtNgeC+cl/8tpm+jxoBY+K3N7I/jj+dvxKuIhZV7KpKWV295dy1K6YEg1/NO2wj+/210f+98R9+hub0wo1BOZnslRVV16orf0hVeD55HH7d7P4N0V1gY9/zcaEAAAAASUVORK5CYII=';
 const mssimg = 'data:image/png;base64,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';
+const emptySign = 'data:image/png;base64,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';
 //const settingsimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8yMS8xNd8NHYEAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAABV0lEQVQokY2RsUtCURTGf++JRYiEEDRkSxC0NAnNPcohaWiRAuk/sEFccqiGlhqixcUgWmoKoihuQwXREg0uRuDUohRC9JYnQXrvaXimpkvfdDnnnu/3nXstERF6ZLRGsAgE7N4WnYoYtBGk+UXWcXCcXRoiiNZ0O1oiIohhLzXLRTVEJPKN6zYACEYiDLgu9WiS+5M1bOuXYNnEk8tAvX0ZoOG61IF0egnb6opktKZcPPNdYxmOlEKdF8jEggAU1CNaG3/AND2yjkP+wXdOpOKMAgyME08lfNJDHsfJ4jUNthUYYnUzRzTkI2s1rx2pVqn6h1CUXG6FQdtqLQ28F49ZzhwAIaYXEkxRRl0/Uwe2Di+ZmxzuvJKYBtvxOW47+/5VcJ67mw2C3QTvrcRTJcyIvmJ//ZRXJkjuZFgMfPA5NkMsGm79V5+0lJQSpV5E9zelTfivfgDuvbmDzO8EmQAAAABJRU5ErkJggg==';
 //const clearimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTEvMjcvMTX6ZkJdAAAA40lEQVQokZXRrUqEcRDF4WcXEcUi+IHJaBSLiIaJBi1egQsm0WSVBZvYxGJ1wRswaDKIEzRpsXgBJj/QYjKs5b/w+m6QnTbM+c05zDS63a5BaqjaRMQKLjCFV6xl5kNV06yId3CDYTzhB7cRsd0HRMQSTvCYmeOZOY8ORnAcEQt1hyt8Z+ZyWdDBPo7wies6MIHniriF88xs4wWTdeAdMxHRxibOMrNVZnP4qAOrmMYBDjNzq7jdYwzrPaDR+0NE7JbMXyX3LEaxl5mnfUCBFnFZ3N6wkZl31bM2Bv1083/J3/oFq/FJ30Qt2lIAAAAASUVORK5CYII=';
 //const warningimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAYAAABe3VzdAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAATNSURBVFiFtZhrbBRVFMf/985ut93tZrsvKsaUiArERqJVDL6QrSyREENCTfCDaWzEJ03wA/GDImgoBgMpRkMwfgK+4QMkbAN9zUKxPqJFUzXGxn6oBmhJ2d1226WdnXuPH+hju52ZfclJJpk5595zfnfunHPvXEZEyJZwOMQBsEWG2yvU2RmV2Upu0rgouCuVThp2ViwecX5iGNNWpLMF0rt0CaVOnFwwemfjNv7Eteslz0LJgIIxSp04KXs9viZO1AiAiLHjqbHY8fqN9VwhKgmyJEACoHaostfja1aIPp3VM6JQr8fnVMdiRzeEQ0ophGbfYF7S1RkVHf5gtUJ0INumEH10Llgd6OqMilJiFA04rXACgMq0vg+Aa84wXxXcnmmtBQA0zotNnOIBe853y6g3sJoDL4MxUDoNkRyHnJqCmJgAGAMHXrng9ddebO9eVD5uK6BgjACgXIjDADhpGmw+L1Z++QVW//gdAi9sg5hMAgB3CHkYAHTOinqLRQGqHaq8VOXbzIB6ABBTk7hz1y4Enm9AZV0dag58CO6oAKQEA8KXqnybou1qUW+xYMBYuUMeuWe5zSbpcKa+bFkNAEACsHm9sPv9IHErP2ySWrevfZQnHGUFQxYM2Hf2PD04mtjBgPsy9TKZnLsnIZC5hDJgVdOff7/5U6S94GkuCHDI7RJtwWqvQrQn2ybGx2dhICcmICcnAT7vXiH64Fyw2vuP21VQ2ckbUDCGgVMReKe1fQB82XY9npgD1OMJyFQKjC9w7/No2t6/TkWQLqDs5A2odqgi6g2s4sDrRnY9kZi/j8UgtenFwQg7VF9gxYUCyk5egNpMUS4XohWAYtRGZACmR0dBJAC2aJGzVeiiFZgvVf8L4MXz3bKnyr+RAZuM7AwM+tjY3LM+OmrqiwGbe6p89WpHfmUnJ+BIpUtuWb+O2aVstXIzmyQAkB69YenTLunjJS9uxUilKydkTsD+0xF6+5ffX2VArVkbZrdDu3IFs3OmDQ1Z+mTAA6fOXtjefzqSc5otAW/aFNEWvMOjEO23dOJwYGpwECPHjmP8+x8Qb2uDUu6y6gIb0f4z1UvdV11Oy7JjCigYw7fnuuDVpncD8FtG4xzMZsdA00v49fHHoF0bBnM4LLsAWBKcmtr9xzdt0Ln5jtEUUO1QheoL3MsJO3NFIl0HsylYtud9rDj6GZy190PeTOXqBk54q9sXXB5tV03fouGOeraQVujiEAB7rkAilURNy37UvPsOAMAdCuG3R9aApMwu1tlS5tT1gwAazIo3M/rtBICeKv/6MimjueAAQE8msPKrrxFs2HoLWNdxueZu6PE4mD3n+KBx/vS6xI0eI5vp8OxSGq4Yhk7sDlw9eAipgQHo8Tj+fW8vtOsjecHNxHrNzGb105TzK58DrHBisq8P/WvWQnE6oQ0PQ3G78+1uGcsqi4/l7Z4IvMIJ0nXoiUShcNC5eSxDwHA4xJ8ci52RDM0ABgEk87mYoiSZ3Z5X25lrUDK88VQiFnlmY70hi9kUs4efe5b3jcWP7Kx76PN110Y8DADPSCiZsREw0vOs5JOMgQAoGfrOu5Ymjvx8WQ+HQ5ybHH0YZnHm4VFXc6OgLU0m4yhN2Cct2HC2e3Z3ZHh49B+asfvABkh0CAAAAABJRU5ErkJggg==';
@@ -163,7 +163,7 @@ const signConfig = {
   ZA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------ 95.Zambia
   //AO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------- 96.Angola
   MZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ---------------------------------- 97.Mozambique
-  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 80, 100 ]}, // ----------------------------------------------- 98.Cyprus
+  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 75, 80, 100 ]}, // ------------------------------------------- 98.Cyprus
   AJ: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ----------------------------------------------- 99.Azerbaijan
   AM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ---------------------------------------------------- 100.Armenia
   AO: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // -------------------------- 101.Angola
@@ -260,7 +260,9 @@ function WMESpeedhelper_init() {
 
 }
 
-window.SDK_INITIALIZED.then(() => {
+// Check if unsafeWindow is availabe, if so use that
+// Fix from chengkeith
+('unsafeWindow' in window ? window.unsafeWindow : window).SDK_INITIALIZED.then(() => {
   // initialize the sdk with your script id and script name
   wmeSDK = getWmeSdk({scriptId: "wme-speed-helper", scriptName: "Speed Helper"});
   WMESpeedhelper_bootstrap();
@@ -342,6 +344,10 @@ function makeSigns() {
 
     renderSigns(activeConfig, signsHolder, (speed) => clickSegmentSpeed(speed));
 
+    if (options.clearSign) {
+      renderClearSign(signsHolder);
+    }
+
     addToSpeedLimitSection(signsHolder);
   }
 }
@@ -369,7 +375,7 @@ function clickSegmentSpeed(allowedSpeed) {
 
   log('Changing speed to ' + allowedSpeed);
 
-  if (wmeSDK.Settings.getUserSettings().isImperial) {
+  if (!!allowedSpeed && wmeSDK.Settings.getUserSettings().isImperial) {
     allowedSpeed = allowedSpeed * 1.609344;
   }
 
@@ -377,8 +383,8 @@ function clickSegmentSpeed(allowedSpeed) {
     try {
       wmeSDK.DataModel.Segments.updateSegment({
         segmentId: id,
-        fwdSpeedLimit: allowedSpeed,
-        revSpeedLimit: allowedSpeed
+        fwdSpeedLimit: !!allowedSpeed ? allowedSpeed : null,
+        revSpeedLimit: !!allowedSpeed ? allowedSpeed : null
       })
     }
     catch (err) {
@@ -429,6 +435,22 @@ function renderSigns(activeConfig, holder, click) {
   });
 }
 
+function renderClearSign(holder) {
+
+  // The sign background
+  const sign = document.createElement("div");
+  sign.id = 'clearsign';
+
+  // Get width/height of sign background img
+  const scale = options.iconScale / 100;
+  sign.style.cssText = 'cursor:pointer;float:left;width:'+(34*scale)+'px;height:'+(34*scale)+'px;background-image: url(\''+ emptySign + '\');background-size:contain;';
+
+  sign.onclick = () => clickSegmentSpeed(0);
+
+  holder.append(sign);
+
+}
+
 function displayChangelog() {
   if (!WazeWrap.Interface) {
     setTimeout(displayChangelog, 1000);
@@ -473,6 +495,7 @@ function constructSettings() {
     scriptContentPane.append(`<span>Current Version: <b>${ScriptVersion}</b></span>`);
 
     addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
+    addBooleanSettingsCallback(scriptContentPane, '', 'Enable Clear Sign', 'clearSign', toggleBoolean);
   });
 
 }
@@ -480,7 +503,8 @@ function constructSettings() {
 function getDefaultOptions() {
   return {
     lastAnnouncedVersion: '',
-    iconScale: 100
+    iconScale: 100,
+    clearSign: true,
   }
 }
 
@@ -527,4 +551,20 @@ function addTextNumberSettings(container, title, label, name, step = 1) {
   container.append(optionHtml);
 
   textInput.on('change', changeText);
+}
+
+function addBooleanSettingsCallback(container, title, label, name, clickHandler) {
+  const currentValue = options[name];
+
+  const checkbox = $('<wz-checkbox id="' + name + '" Title="' + title + '" name="types" disabled="false" checked="' + currentValue + '">' + label + '</wz-checkbox>');
+  const optionHtml = $('<div class="urcom-option"></div>').append(checkbox);
+
+  container.append(optionHtml);
+
+  checkbox.on('click', clickHandler);
+}
+
+function toggleBoolean(event) {
+  options[event.target.id] = event.target.checked;
+  saveOptions(options);
 }

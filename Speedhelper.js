@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.5
+// @version        1.0.6
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,8 +29,9 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Added additional 'reset speed' sign. Can be disabled in the options.";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added extra speeds to Montenegro";
-ChangeLog = ChangeLog + "<br />" + "- Change clear speed icon to avoid confusion";
+ChangeLog = ChangeLog + "<br />" + "- (1.O.5) Added extra speeds to Montenegro";
+ChangeLog = ChangeLog + "<br />" + "- (1.0.5) Change clear speed icon to avoid confusion";
+ChangeLog = ChangeLog + "<br />" + "- (1.0.6) Added extra speeds to Germany";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -76,7 +77,7 @@ const signConfig = {
   HU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //--- 7.Hungary
   MX:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 50, 60, 70, 80, 90, 100, 110]}, //-------------------- 8.Mexico
   SZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 100, 120]}, //-------------------------- 9.Switzerland
-  GM:         {'sgn': BGa, 'ann':'kph', 'spd':[ [7,BGb], 30, 40, 50, 60, 70, 80, 100, 120, 130]}, //-----------------------10.Germany
+  GM:         {'sgn': BGa, 'ann':'kph', 'spd':[ [7,BGb], 10, 20, 25, 30, 40, 50, 60, 70, 80, 100, 120, 130]}, //-----------10.Germany
   LG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100]}, //-------------------- 11.Latvia
   LH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //--------12.Lithuania
   RS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //----------------- 13.Russia

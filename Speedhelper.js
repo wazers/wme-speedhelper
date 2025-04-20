@@ -448,7 +448,7 @@ function renderClearSign(activeConfig, holder) {
   // Get width/height of sign background img
   const scale = options.iconScale / 100;
   //sign.style.cssText = 'cursor:pointer;float:left;width:'+(34*scale)+'px;height:'+(34*scale)+'px;background-image: url(\''+ emptySign + '\');background-size:contain;';
-  sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgImage + '\');background-size:contain;';
+  sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;';
 
   sign.onclick = () => clickSegmentSpeed(0);
 

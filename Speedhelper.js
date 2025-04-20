@@ -430,7 +430,7 @@ function renderSigns(activeConfig, holder, click) {
     // The speed value
     const speedValue = document.createElement("div");
     speedValue.id = 'spd_'+ allowedSpeed;
-    speedValue.style.cssText = 'text-align:center;margin-top:'+(dims[2] - (dims[2]*2*(1 - scale)))+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
+    speedValue.style.cssText = 'text-align:center;line-height:'+(dims[1]*scale)+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
     speedValue.innerHTML = allowedSpeed;
     sign.append(speedValue);
     holder.append(sign);

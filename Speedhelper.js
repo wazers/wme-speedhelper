@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.6
+// @version        1.0.7
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,12 +26,14 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-//ChangeLog = ChangeLog + "<br /><b>New: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Added additional 'reset speed' sign. Can be disabled in the options.";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added Antarctica";
+ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- (1.O.5) Added extra speeds to Montenegro";
-ChangeLog = ChangeLog + "<br />" + "- (1.0.5) Change clear speed icon to avoid confusion";
-ChangeLog = ChangeLog + "<br />" + "- (1.0.6) Added extra speeds to Germany";
+ChangeLog = ChangeLog + "<br />" + "- Added extra speeds to Maldives";
+ChangeLog = ChangeLog + "<br />" + "- Added extra speeds to New Zealand (thnx @South-Paw)";
+ChangeLog = ChangeLog + "<br />" + "- Ability to turn off the speed sign behind the clear button";
+ChangeLog = ChangeLog + "<br />" + "- Fixed alignment of text in speed signs (thnx @South-Paw)";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -197,8 +199,10 @@ const signConfig = {
   SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //----------------------------------------------------127. South Sudan
   TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------128. Thailand
   GH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 90, 100 ]}, //-----------------------------------------------------129. Ghana
-  MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35 ]}, //--------------------------------------------------130. Maldives
+  MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35, 50 ]}, //----------------------------------------------130. Maldives
   TJ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 60, 90, 110 ]}, //-----------------------------------------------------131. Tajikistan
+  AY:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 25, 30, 35, 40 ]}, //--------------------------------------------------132. Antarctica
+  CB:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 80, 100, 120 ]}, //--------------------------------------------134. Cambodia
 };
 
 let wmeSDK;
@@ -444,11 +448,15 @@ function renderClearSign(activeConfig, holder) {
   // The sign background
   const sign = document.createElement("div");
   sign.id = 'clearsign';
+  sign.title = 'Remove speed'
 
   // Get width/height of sign background img
   const scale = options.iconScale / 100;
-  //sign.style.cssText = 'cursor:pointer;float:left;width:'+(34*scale)+'px;height:'+(34*scale)+'px;background-image: url(\''+ emptySign + '\');background-size:contain;';
-  sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;';
+  if (options.clearSignBackground) {
+    sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgImage + '\');background-size:contain;';
+  } else {
+    sign.style.cssText = 'cursor:pointer;float:left;width:' + (dims[1] * scale) + 'px;height:' + (dims[0] * scale) + 'px;';
+  }
 
   sign.onclick = () => clickSegmentSpeed(0);
 
@@ -507,6 +515,7 @@ function constructSettings() {
 
     addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
     addBooleanSettingsCallback(scriptContentPane, '', 'Enable Clear Sign', 'clearSign', toggleBoolean);
+    addBooleanSettingsCallback(scriptContentPane, '', 'Show speed sign behind Clear Sign', 'clearSignBackground', toggleBoolean);
   });
 
 }
@@ -516,6 +525,7 @@ function getDefaultOptions() {
     lastAnnouncedVersion: '',
     iconScale: 100,
     clearSign: true,
+    clearSignBackground: true,
   }
 }
 

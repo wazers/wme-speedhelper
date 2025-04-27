@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.7
+// @version        1.0.8
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,14 +26,11 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Antarctica";
-ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
+//ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Added Antarctica";
+//ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added extra speeds to Maldives";
-ChangeLog = ChangeLog + "<br />" + "- Added extra speeds to New Zealand (thnx @South-Paw)";
-ChangeLog = ChangeLog + "<br />" + "- Ability to turn off the speed sign behind the clear button";
-ChangeLog = ChangeLog + "<br />" + "- Fixed alignment of text in speed signs (thnx @South-Paw)";
+ChangeLog = ChangeLog + "<br />" + "- Fixed speed alignment for non circle signs";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -55,7 +52,7 @@ const binimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eN
 //const settingsimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8yMS8xNd8NHYEAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAABV0lEQVQokY2RsUtCURTGf++JRYiEEDRkSxC0NAnNPcohaWiRAuk/sEFccqiGlhqixcUgWmoKoihuQwXREg0uRuDUohRC9JYnQXrvaXimpkvfdDnnnu/3nXstERF6ZLRGsAgE7N4WnYoYtBGk+UXWcXCcXRoiiNZ0O1oiIohhLzXLRTVEJPKN6zYACEYiDLgu9WiS+5M1bOuXYNnEk8tAvX0ZoOG61IF0egnb6opktKZcPPNdYxmOlEKdF8jEggAU1CNaG3/AND2yjkP+wXdOpOKMAgyME08lfNJDHsfJ4jUNthUYYnUzRzTkI2s1rx2pVqn6h1CUXG6FQdtqLQ28F49ZzhwAIaYXEkxRRl0/Uwe2Di+ZmxzuvJKYBtvxOW47+/5VcJ67mw2C3QTvrcRTJcyIvmJ//ZRXJkjuZFgMfPA5NkMsGm79V5+0lJQSpV5E9zelTfivfgDuvbmDzO8EmQAAAABJRU5ErkJggg==';
 //const clearimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTEvMjcvMTX6ZkJdAAAA40lEQVQokZXRrUqEcRDF4WcXEcUi+IHJaBSLiIaJBi1egQsm0WSVBZvYxGJ1wRswaDKIEzRpsXgBJj/QYjKs5b/w+m6QnTbM+c05zDS63a5BaqjaRMQKLjCFV6xl5kNV06yId3CDYTzhB7cRsd0HRMQSTvCYmeOZOY8ORnAcEQt1hyt8Z+ZyWdDBPo7wies6MIHniriF88xs4wWTdeAdMxHRxibOMrNVZnP4qAOrmMYBDjNzq7jdYwzrPaDR+0NE7JbMXyX3LEaxl5mnfUCBFnFZ3N6wkZl31bM2Bv1083/J3/oFq/FJ30Qt2lIAAAAASUVORK5CYII=';
 //const warningimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAYAAABe3VzdAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAATNSURBVFiFtZhrbBRVFMf/985ut93tZrsvKsaUiArERqJVDL6QrSyREENCTfCDaWzEJ03wA/GDImgoBgMpRkMwfgK+4QMkbAN9zUKxPqJFUzXGxn6oBmhJ2d1226WdnXuPH+hju52ZfclJJpk5595zfnfunHPvXEZEyJZwOMQBsEWG2yvU2RmV2Upu0rgouCuVThp2ViwecX5iGNNWpLMF0rt0CaVOnFwwemfjNv7Eteslz0LJgIIxSp04KXs9viZO1AiAiLHjqbHY8fqN9VwhKgmyJEACoHaostfja1aIPp3VM6JQr8fnVMdiRzeEQ0ophGbfYF7S1RkVHf5gtUJ0INumEH10Llgd6OqMilJiFA04rXACgMq0vg+Aa84wXxXcnmmtBQA0zotNnOIBe853y6g3sJoDL4MxUDoNkRyHnJqCmJgAGAMHXrng9ddebO9eVD5uK6BgjACgXIjDADhpGmw+L1Z++QVW//gdAi9sg5hMAgB3CHkYAHTOinqLRQGqHaq8VOXbzIB6ABBTk7hz1y4Enm9AZV0dag58CO6oAKQEA8KXqnybou1qUW+xYMBYuUMeuWe5zSbpcKa+bFkNAEACsHm9sPv9IHErP2ySWrevfZQnHGUFQxYM2Hf2PD04mtjBgPsy9TKZnLsnIZC5hDJgVdOff7/5U6S94GkuCHDI7RJtwWqvQrQn2ybGx2dhICcmICcnAT7vXiH64Fyw2vuP21VQ2ckbUDCGgVMReKe1fQB82XY9npgD1OMJyFQKjC9w7/No2t6/TkWQLqDs5A2odqgi6g2s4sDrRnY9kZi/j8UgtenFwQg7VF9gxYUCyk5egNpMUS4XohWAYtRGZACmR0dBJAC2aJGzVeiiFZgvVf8L4MXz3bKnyr+RAZuM7AwM+tjY3LM+OmrqiwGbe6p89WpHfmUnJ+BIpUtuWb+O2aVstXIzmyQAkB69YenTLunjJS9uxUilKydkTsD+0xF6+5ffX2VArVkbZrdDu3IFs3OmDQ1Z+mTAA6fOXtjefzqSc5otAW/aFNEWvMOjEO23dOJwYGpwECPHjmP8+x8Qb2uDUu6y6gIb0f4z1UvdV11Oy7JjCigYw7fnuuDVpncD8FtG4xzMZsdA00v49fHHoF0bBnM4LLsAWBKcmtr9xzdt0Ln5jtEUUO1QheoL3MsJO3NFIl0HsylYtud9rDj6GZy190PeTOXqBk54q9sXXB5tV03fouGOeraQVujiEAB7rkAilURNy37UvPsOAMAdCuG3R9aApMwu1tlS5tT1gwAazIo3M/rtBICeKv/6MimjueAAQE8msPKrrxFs2HoLWNdxueZu6PE4mD3n+KBx/vS6xI0eI5vp8OxSGq4Yhk7sDlw9eAipgQHo8Tj+fW8vtOsjecHNxHrNzGb105TzK58DrHBisq8P/WvWQnE6oQ0PQ3G78+1uGcsqi4/l7Z4IvMIJ0nXoiUShcNC5eSxDwHA4xJ8ci52RDM0ABgEk87mYoiSZ3Z5X25lrUDK88VQiFnlmY70hi9kUs4efe5b3jcWP7Kx76PN110Y8DADPSCiZsREw0vOs5JOMgQAoGfrOu5Ymjvx8WQ+HQ5ybHH0YZnHm4VFXc6OgLU0m4yhN2Cct2HC2e3Z3ZHh49B+asfvABkh0CAAAAABJRU5ErkJggg==';
-const BGa = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8wOS8xNWB5Zg4AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAB/ElEQVRYhe2YPWjbQBiGnwvJEPCQzaM2TR27FDxoz6ItSyEeuha6du6Q1aarA+pUuhlKdlEKXQrt0EWeLDK0WWICIYE45OtgnTifT6otJKShLxycDt17D9/96DspEaEL2q/acabUAHhuNf/2RT5V8VO7RGSm1BkwBPqAKnn1D3ABvPNF0tpAZkpNgFN2j6AAX4DTfwGVgmTh/wwc7Qhg6xF4WTZthSAzpU6Aj1hT0AtDemHIYRBw4HlrfZZpyn0cczudcjudumzPfZFXzgFFZKMkcJLAUwKiy2UQyMN8LtvqYT6XyyAQ0yMrE9eYLoiBDXE9Gm0NYOt6NHLBvNkGZGF2uomiyhBaN1Fkgzwl4BWCJDCpKxK2HJH5UQayNNdE3XKsmYEee8/YJWcY50Q/iop2WmU5PN/ryp7RONSVXhhubM06dOB59MLQbHrmAumbIE3J8t7PDs0VSPaQH1yHQdAYiMP7OAfB+oo2MS0l3i9MkNb1H8SWBvluNi7TrXKZSnJ4f8tBfJGvrJIYAO7juDEQh/dFDpLpSlcKcolaZHk/ZkFYA4nMl5uYnmWa2iC/dCUH8UXeskrpALgaDmsHcXi+3gDJ9EFX7uKYxXhcG8RiPOZufX381NMCdDQxki6litJS8tyZ60T3L1gWULtXTgdQu5fwAqj2fks0qb9wkQP7KV35ewAAAABJRU5ErkJggg==', '34|34|10|visible']; // Global (red circle)
+const BGa = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8wOS8xNWB5Zg4AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAB/ElEQVRYhe2YPWjbQBiGnwvJEPCQzaM2TR27FDxoz6ItSyEeuha6du6Q1aarA+pUuhlKdlEKXQrt0EWeLDK0WWICIYE45OtgnTifT6otJKShLxycDt17D9/96DspEaEL2q/acabUAHhuNf/2RT5V8VO7RGSm1BkwBPqAKnn1D3ABvPNF0tpAZkpNgFN2j6AAX4DTfwGVgmTh/wwc7Qhg6xF4WTZthSAzpU6Aj1hT0AtDemHIYRBw4HlrfZZpyn0cczudcjudumzPfZFXzgFFZKMkcJLAUwKiy2UQyMN8LtvqYT6XyyAQ0yMrE9eYLoiBDXE9Gm0NYOt6NHLBvNkGZGF2uomiyhBaN1Fkgzwl4BWCJDCpKxK2HJH5UQayNNdE3XKsmYEee8/YJWcY50Q/iop2WmU5PN/ryp7RONSVXhhubM06dOB59MLQbHrmAumbIE3J8t7PDs0VSPaQH1yHQdAYiMP7OAfB+oo2MS0l3i9MkNb1H8SWBvluNi7TrXKZSnJ4f8tBfJGvrJIYAO7juDEQh/dFDpLpSlcKcolaZHk/ZkFYA4nMl5uYnmWa2iC/dCUH8UXeskrpALgaDmsHcXi+3gDJ9EFX7uKYxXhcG8RiPOZufX381NMCdDQxki6litJS8tyZ60T3L1gWULtXTgdQu5fwAqj2fks0qb9wkQP7KV35ewAAAABJRU5ErkJggg==', '34|34|9|visible']; // Global (red circle)
 const BGb = ['data:image/png;base64,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', '34|50|10|hidden']; // residential
 const BGc = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAiCAYAAACnSgJKAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8wOS8xNWB5Zg4AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAD7ElEQVRYhe2Vyyu8exzHX88zmodmmBGiSSSXZiiK3HIpl1lYKEyxYGMhUaN+EeEnt2lKkjqSlcKKh/wDMqVYIlbjskFobAjjMpjnLE7kMqFzOGdxvFff7+fz9H59+3w+PR9BURT+K/k9v8iy3ON0Oru/40GCIGA0GnsrKyt73sBlWe53OBxNgYGBqNVqvvIBgiDg8XhwOBy/AFVlZWXXC/jW1tZvjUbD4ODgl0Ffq7m5OcjpdP4GugDEx4SiKEiS9G1g4I3/i54/ltrlcmG32zk5OaGjowNRFLHb7YiiSH5+PuXl5fT19XF+fo6fnx/t7e1MTk6yv7/P/f09NpsNWZZZXV0lNzcXq9X6wv9RIj40MjLC2toaFRUViKLI0tISR0dH1NXVMTk5yfT0NMvLy+Tk5GCxWHh4eECWZVJTU6mqqkKj0TA3N0dpaSlLS0sMDw/7rIRPeFNTExkZGczPz7O/v09YWBiHh4eMj48TFxdHcnIyHo+HjY0NSkpKMBgMCILA6uoqxcXFhIWFodPpqKmpwWaz4XA4fML9fAU3Nzcxm80cHx9jt9uprq4mPj6e1tZWjEYjm5ubBAQEUF9fz/r6Ov7+/mg0GhoaGnA6nRgMBi4uLlhYWGBqaoqsrKzPwyVJYnR0FEEQGBgYwO12U1paSlJSEgDh4eHExsbS1dWFJEl0dnaSnZ3N4OAgiqLQ3d1NUVERQ0NDpKen09bW9nl4Xl4eeXl5L2Jms/npbDAYmJ6eRlEUBEEA/pqT50pJSfEJ/BD+KJfLhaIoREREAHBwcEBAQAA3Nzfo9Xq0Wi1ut5vT01O0Wi0ej4e9vT2ur6+5vb3FZDIRGRn59+BjY2NIkkR7ezsAo6OjmEwmdnd3OTg4YGJigsbGRqKiojAajWxvbxMaGsrQ0BAxMTH09va+C/c57U9JUUSlUj3dBUFAFEWCgoKQZZmVlRVmZ2fR6XR4vV7u7u6wWq2UlJTQ399Pfn7+e/bvw71e74u/kqIo3N3doVKpsFgslJWVYbFYEEWR+/v7p++ur6+5vLx8FwwflF2r1TIzM4PL5cJkMiFJEmq1mtPTUwoLC0lMTMRgMLCzs0NISMjT8CmK8qnF9C68traWtLQ03G434eHhmM1mJEmioKAAjUaDXq/n7OyMq6sr/P39ubm5AaCvr4/g4OB/Bg8JCaGgoOBN/LmxXq9Hr9e/yEdHR38Ihg96/t36gf/Af+A/8P8J/HErfZde+4vPE7e3t98Kf+3/tNWMRqNtcXHR2tLSolOr1V8O9ng8XF5enmdmZv7xGBOeL31Zlnu2tra6vV7vl7ZAURREUSQhIaG3qqqqxyf839afzGFw15tV9cAAAAAASUVORK5CYII=','34|31|17|visible']; // US
 const BGd = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOnAAADpwBB5RT3QAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTEvMDkvMTVgeWYOAAACVklEQVRYhe2YPUhbURTHf9ckEngOVRHBkCEU3tShQ5eSiqNDackWCgU7dLRDCw6dO3RwKdRRoZ1KNrE4ZFQbXBw6dAqIFIltkZjFB+Iz3A7vg5ub92I+3uvL0P90OMm775dzzr33nAgpJeOg9LAP1oV4BDzQ3L9MKSvDrCcGiUhdiPfAC2AeED2++hvYBd6ZUv6MDKQuxCawwuARlMA+sHIbUE8QN/xfgTsDAui6AZ73SlsoSF2IMvAFJQWZhUlmVheZKhqkjEbgc20rx2XN4mLjAPvsWv94y5TyZd8gQRBza0Wmy1dhPyhQrUqW8/VaXzBdIG469lWIQrVEZvZ0IAhPdjPPyfK27n5tSvnhNpAWSk3c3XsamoZ+1bZyHC/tqC4JFNQCntAgNlWIQrU0MgRAymhQqJZUlwA6wtQBgrNFAacmhk1HkDKzp8ytFVXXfbcMOkHcwyoNzu4YtDD70XT5iszCpOr62AWCc2ICMLO6GDlEyNr3gkDmPWOqaMQGoq2d9tIzAf6W9bdrFAUappTR0NPz2Aeh+xb9l3qogiSu/yC6PJCjBBkOfRBTym845z/g3A1xqW3l9PZg1wdx9cczLmtWbCDa2jduEDpAPnnGxcZBbCDa2j88wwcxpXyL09Jhn13TqmQjh2hVsnpaXnWBuPrsGefrNexmPjIIu5nXu7XvXlpgXBsjV09QdtDx0s5IkbGbeR0C4I0+XnSBuOF6psKcLG8PVTOtSjaoX93S+1UY93FCgQkdsLSr3FfAy2GUAUsDSnbkDABKdggPgUrub4k49RftnBxzBAP7OgAAAABJRU5ErkJggg==', '34|34|10|visible']; // Sweden (red/yellow circle)
@@ -70,139 +67,139 @@ const BGk = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAiCAYAAADPuYBy
 /* // BGh = ['data:image/png;base64,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','34|23|17|hidden']; // lost in translation */
 
 const signConfig = {
-  NL:         {'sgn': BGa, 'ann':'kph', 'spd':[ [15,BGb], 30, 50, 60, 70, 80, 100, 120, 130 ]}, //------------------------ 1.The Netherlands
-  BE:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 50, 70, 90, 100, 120 ]}, //--------------------------------- 2.Belgium
-  LU:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 50, 70, 90, 110, 130 ]}, //--------------------------------- 3.Luxemburg
-  FR:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20, BGf], 30, 50, 70, 80, 90, 110, 130 ]}, //---------------------------- 4.France
-  AU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 110, 120, 130 ]}, //------------------------- 5.Austria
-  UK:         {'sgn': BGa, 'ann':'mph', 'spd':[ 20, 30, 40, 50, 60, 70]}, //---------------------------------------------- 6.United Kingdom
-  HU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //--- 7.Hungary
-  MX:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 50, 60, 70, 80, 90, 100, 110]}, //-------------------- 8.Mexico
-  SZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 100, 120]}, //-------------------------- 9.Switzerland
-  GM:         {'sgn': BGa, 'ann':'kph', 'spd':[ [7,BGb], 10, 20, 25, 30, 40, 50, 60, 70, 80, 100, 120, 130]}, //-----------10.Germany
-  LG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100]}, //-------------------- 11.Latvia
-  LH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //--------12.Lithuania
-  RS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //----------------- 13.Russia
-  EZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90 ]}, //----------------------------------------- 14.Czech Republic
-  SP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //--------------------------- 15.Spain
-  PO:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //---------------------- 16.Portugal
-  DA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 110]}, //------------------------------------- 17.Danmark
-  CO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------ 18.Colombia
-  LO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //--------------------------- 19.Slovakia
-  BR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //---------------------------- 20.Brazil
-  UY:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 45, 60, 75, 80, 90, 110]}, //----------------------------------------- 21.Uruguay
-  US:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]}, //------- 22.United States
-  ES:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 70, 80, 90]}, //------------------------------------------ 23.El Salvador
-  BL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 50, 70, 80, 100]}, //--------------------------------------------- 24.Bolivia
-  LS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, //---------------------------------------- 25.Liechtenstein
-  EI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, //---------------------------------------- 26.Ireland
-  PL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //------------- 27.Poland
-  AS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //------------------- 28.Australia
-  NZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //------------------------ 29.New Zealand
-  SW:         {'sgn': BGd, 'ann':'kph', 'spd':[ [7,BGh], 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]}, //-------------- 30.Sweden
-  CA:         {'sgn': BGe, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //-------------------------------- 31.Canada
-  SR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //-------------------32.Serbia
-  RO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 130]}, //----------------- 33.Romania
-  IT:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //--------------------------- 34.Italy
-  GQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45]}, //----------------------------------- 35.Guam
-  SI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 30, 40, 50, 60, 70, 90, 100, 110, 130]}, //----------------------------36.Slovenia
-  BO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]}, //----------------------- 37.Belarus
-  BC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 80, 100, 120]}, //-------------------------------------------- 38.Botswana
-  SF:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 40, 60, 70, 80, 100, 120]}, //------------------------------------ 39.South Africa
-  MY:         {'sgn': BGa, 'ann':'kph', 'spd':[ [30,BGb], 35, 40, 50, 60, 70, 80, 90, 110]}, //--------------------------- 40.Malaysia
-  BU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 120, 140]}, //---------------------------- 41.Bulgaria
-  JE:         {'sgn': BGa, 'ann':'mph', 'spd':[ 15, 20, 30, 40]}, //------------------------------------------------------ 42.Jersey
-  IC:         {'sgn': BGd, 'ann':'mph', 'spd':[ 30, 35, 45, 50, 60, 70, 80, 90]}, //-------------------------------------- 43.Iceland
-  AR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //-------------- 44.Argentina
-  RE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 90, 110]}, //------------------------------------------------- 45.Réunion
-  TU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 120]}, //---------------------------------------------------- 46.Turkey
-  CJ:         {'sgn': BGa, 'ann':'mph', 'spd':[ 25, 30, 50]}, //---------------------------------------------------------- 47.Cayman Island
-  MU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 80, 90, 100, 120]}, //---------------------------------------- 48.Oman
-  VE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 15, 30, 40, 50, 60, 70, 90, 120]}, //------------------------------------- 49.Venezuela
-  RP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 100, 80, 60, 50, 40, 30, 20, 15]}, //------------------------------------- 50.Philippines
-  KZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20,40, 60, 100, 110, 140]}, //-------------------------------------------- 51.Kazakhstan
-  FI:         {'sgn': BGd, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //--------------------- 52.Finland
-  IL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60 ,70, 80, 90 ,100, 110, 120, 130]}, //---------------------- 53.Israel
-  TC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 70, 80, 90, 100, 120, 140]}, //------------------------------- 54.United Arab Emirates
-  TW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //----------------- 55.Taiwan
-  CE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]}, //------------ 56.Sri Lanka
-  NO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //-------------------------------- 57.Norway
-  WE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //-------------------------------- 58.West Bank
-  CH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 120, 100, 80, 70, 60, 50, 40, 20]}, //------------------------------------ 59.China
-  ID:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------ 60.Indonesia
-  GK:         {'sgn': BGa, 'ann':'mph', 'spd':[ 15, 20, 25, 35]}, //------------------------------------------------------ 61.Guernsey
-  EC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100]}, //--------------------------------- 62.Ecuador
-  CS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100]}, //------------------------------------- 63.Costa Rica
-  RQ:         {'sgn': BGi, 'ann':'mph', 'spd':[ 5,10,15,20,25,30,35,40,45,50,55,60,65]}, //------------------------------- 64.Puerto Rico
-  AG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 120]}, //------------------------------------ 65.Algeria
-  BX:         {'sgn': BGa, 'ann':'mph', 'spd':[ 30, 35, 40, 50, 60, 70, 80, 90, 110]}, //--------------------------------- 66.Brunei
-  PM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 60, 80]}, //---------------------------------------------- 67.Panama
-  UZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 30, 50, 70, 100]}, //------------------------------------------------- 68.Uzbekistan
-  MD:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90]}, // ----------------------------------------- 69.Moldova
-  IN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ------------- 70.India
-  HR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ------------- 71.Croatia
-  LE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, // ------------------------------- 72.Lebanon
-  HK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 100, 110]}, // ------------------------------------------- 73.Hong Kong
-  EN:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 110]}, // --------------------- 74.Estonia
-  SN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 70, 80, 90]}, // --------------------------------------------- 75.Singapore
-  CM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 100]}, // ---------------------------------------------------- 76.Cameroon
-  CI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, // --------------------------------------- 77.Chile
-  QA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 80, 100, 120]}, // ----------------------------------- 78.Quatar
-  MW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 120]}, // ----------------------------------- 79.Montenegro
-  AA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 60, 80]}, // --------------------------------------------------------- 80.Aruba (ABC)
-  NS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 90]}, // --------------------------------------------------------- 81.Suriname
-  CW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 82.Curacao
-  BQ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 83.Bonaire / Saba Island
-  MF:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // --------------------------------------------------------- 84.Sint Eustatius
-  MN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90]}, // ----------------------------------------- 85.Monaco
-  UP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20, BGh], 30, 40, 50, 90, 110, [130, BGj] ]}, // ----------------- 86.Ukraine
-  BK: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 87.Bosnia-Herzegovina
-  GR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ----------------- 88.Greece
-  PP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 100]}, // -------------------------------------------------------- 89.Papua New Guinea
-  MP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 110]}, // ---------------------------------------------------- 90.Mauritius
-  //IR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 90, 100, 110, 120]}, // ---------------------------------- 91.Iran
-  DR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 60, 100, 120]}, // ----------------------------------- 92.Dominican Republic
-  BG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 80]}, // ------------------------------------------------- 93.Bangladesh
-  PE:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 35, 40, 55, 60, 80, 100, 120 ]}, // -------------------------------------- 94.Peru
-  ZA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------ 95.Zambia
-  //AO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------- 96.Angola
-  MZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ---------------------------------- 97.Mozambique
-  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 75, 80, 100 ]}, // ------------------------------------------- 98.Cyprus
-  AJ: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ----------------------------------------------- 99.Azerbaijan
-  AM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ---------------------------------------------------- 100.Armenia
-  AO: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // -------------------------- 101.Angola
-  GT: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 20, 25, 30, 40, 60, 70, 80, 90 ]}, // ---------------------------- 102.Guatemala
-  IR: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120 ]}, // --------- 103.Iran
-  JM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 65, 80, 100, 110 ]}, // -------------------------------------- 104.Jamaica
-  VQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ,60, 65, 70, 75, 80 ]}, //------ 105.Virgin Islands (US)
-  CQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5,10, 15, 20, 25, 30, 35, 40, 45]}, //------------------------------------ 106. Northern Mariana Islands (US)
-  PK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, //------------------------------------------- 107. Pakistan
-  BA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90, 100, 120 ]}, //------------------------------- 108.Bahrain
-  SA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140 ]}, //------------ 109.Saudi Arabia
-  KU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 45, 50, 60, 80, 100, 120 ]}, //------------------------------- 110.Kuwait
-  KG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 20, 40, 50, 60, 90 ]}, //---------------------------------------------- 111.Kyrgyzstan
-  WA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 80, 100, 120 ]}, //--------------------------------------------112.Namibia
-  LT:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------113.Lesotho
-  WZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------114.eSwatini
-  ZI:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //------------------------------------115.Zimbabwe
-  AN:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90 ]}, //----------------------------------------------116.Andorra
-  MG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------117.Mongolia - Waze uses MG
-  HO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 25, 40, 50, 60, 80 ]}, //----------------------------------------- 118. Honduras
-  MK:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120, 130 ]}, //---------------------------------- 119. Macedonia
-  YM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140 ]}, //------------------ 120. Yemen
-  MO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //------------------------------- 121. Morocco - Waze uses MO
-  SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 70, 120 ]}, //-----------------------------------------------------122.Sudan
-  VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------------------123.Vietnam - Waze uses VM
-  NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 40, 50, 60, 70, 80 ]}, //------------------------------------124. Nepal
-  FJ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------125. Fiji
-  GI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50 ]}, //------------------------------------------------------126. Gibraltar
-  SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //----------------------------------------------------127. South Sudan
-  TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //----------------------------128. Thailand
-  GH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 90, 100 ]}, //-----------------------------------------------------129. Ghana
-  MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35, 50 ]}, //----------------------------------------------130. Maldives
-  TJ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 60, 90, 110 ]}, //-----------------------------------------------------131. Tajikistan
-  AY:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 25, 30, 35, 40 ]}, //--------------------------------------------------132. Antarctica
-  CB:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 80, 100, 120 ]}, //--------------------------------------------134. Cambodia
+  NL:         {'sgn': BGa, 'ann':'kph', 'spd':[ [15,BGb], 30, 50, 60, 70, 80, 100, 120, 130 ]}, //------------------------------------------- 1.The Netherlands
+  BE:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 50, 70, 90, 100, 120 ]}, //---------------------------------------------------- 2.Belgium
+  LU:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 50, 70, 90, 110, 130 ]}, //---------------------------------------------------- 3.Luxemburg
+  FR:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20, BGf], 30, 50, 70, 80, 90, 110, 130 ]}, //----------------------------------------------- 4.France
+  AU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 110, 120, 130 ]}, //-------------------------------------------- 5.Austria
+  UK:         {'sgn': BGa, 'ann':'mph', 'spd':[ 20, 30, 40, 50, 60, 70]}, //----------------------------------------------------------------- 6.United Kingdom
+  HU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //---------------------- 7.Hungary
+  MX:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 50, 60, 70, 80, 90, 100, 110]}, //--------------------------------------- 8.Mexico
+  SZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 100, 120]}, //--------------------------------------------- 9.Switzerland
+  GM:         {'sgn': BGa, 'ann':'kph', 'spd':[ [7,BGb], 10, 20, 25, 30, 40, 50, 60, 70, 80, 100, 120, 130]}, //------------------------------10.Germany
+  LG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100]}, //--------------------------------------- 11.Latvia
+  LH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //---------------------------12.Lithuania
+  RS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130 ]}, //------------------------------------ 13.Russia
+  EZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90 ]}, //------------------------------------------------------------ 14.Czech Republic
+  SP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------------- 15.Spain
+  PO:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //----------------------------------------- 16.Portugal
+  DA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 110]}, //-------------------------------------------------------- 17.Danmark
+  CO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------------------------- 18.Colombia
+  LO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //---------------------------------------------- 19.Slovakia
+  BR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //----------------------------------------------- 20.Brazil
+  UY:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 45, 60, 75, 80, 90, 110]}, //------------------------------------------------------------ 21.Uruguay
+  US:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80], 'noClearBg': true}, //------- 22.United States
+  ES:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 70, 80, 90]}, //------------------------------------------------------------- 23.El Salvador
+  BL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 50, 70, 80, 100]}, //---------------------------------------------------------------- 24.Bolivia
+  LS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, //----------------------------------------------------------- 25.Liechtenstein
+  EI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, //----------------------------------------------------------- 26.Ireland
+  PL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //-------------------------------- 27.Poland
+  AS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //-------------------------------------- 28.Australia
+  NZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //------------------------------------------- 29.New Zealand
+  SW:         {'sgn': BGd, 'ann':'kph', 'spd':[ [7,BGh], 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]}, //--------------------------------- 30.Sweden
+  CA:         {'sgn': BGe, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110], 'noClearBg': true}, //-------------------------------- 31.Canada
+  SR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //--------------------------------------32.Serbia
+  RO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 130]}, //------------------------------------ 33.Romania
+  IT:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 130]}, //---------------------------------------------- 34.Italy
+  GQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45], 'noClearBg': true}, //----------------------------------- 35.Guam
+  SI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 30, 40, 50, 60, 70, 90, 100, 110, 130]}, //-----------------------------------------------36.Slovenia
+  BO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]}, //------------------------------------------ 37.Belarus
+  BC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 80, 100, 120]}, //--------------------------------------------------------------- 38.Botswana
+  SF:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 40, 60, 70, 80, 100, 120]}, //------------------------------------------------------- 39.South Africa
+  MY:         {'sgn': BGa, 'ann':'kph', 'spd':[ [30,BGb], 35, 40, 50, 60, 70, 80, 90, 110]}, //---------------------------------------------- 40.Malaysia
+  BU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 120, 140]}, //----------------------------------------------- 41.Bulgaria
+  JE:         {'sgn': BGa, 'ann':'mph', 'spd':[ 15, 20, 30, 40]}, //------------------------------------------------------------------------- 42.Jersey
+  IC:         {'sgn': BGd, 'ann':'mph', 'spd':[ 30, 35, 45, 50, 60, 70, 80, 90]}, //--------------------------------------------------------- 43.Iceland
+  AR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, //--------------------------------- 44.Argentina
+  RE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 90, 110]}, //-------------------------------------------------------------------- 45.Réunion
+  TU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 120]}, //----------------------------------------------------------------------- 46.Turkey
+  CJ:         {'sgn': BGa, 'ann':'mph', 'spd':[ 25, 30, 50]}, //----------------------------------------------------------------------------- 47.Cayman Island
+  MU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 80, 90, 100, 120]}, //----------------------------------------------------------- 48.Oman
+  VE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 15, 30, 40, 50, 60, 70, 90, 120]}, //-------------------------------------------------------- 49.Venezuela
+  RP:         {'sgn': BGa, 'ann':'kph', 'spd':[ 100, 80, 60, 50, 40, 30, 20, 15]}, //-------------------------------------------------------- 50.Philippines
+  KZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20,40, 60, 100, 110, 140]}, //--------------------------------------------------------------- 51.Kazakhstan
+  FI:         {'sgn': BGd, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------- 52.Finland
+  IL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60 ,70, 80, 90 ,100, 110, 120, 130]}, //----------------------------------------- 53.Israel
+  TC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 70, 80, 90, 100, 120, 140]}, //-------------------------------------------------- 54.United Arab Emirates
+  TW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //------------------------------------ 55.Taiwan
+  CE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]}, //------------------------------- 56.Sri Lanka
+  NO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //--------------------------------------------------- 57.Norway
+  WE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //--------------------------------------------------- 58.West Bank
+  CH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 120, 100, 80, 70, 60, 50, 40, 20]}, //------------------------------------------------------- 59.China
+  ID:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------------------------- 60.Indonesia
+  GK:         {'sgn': BGa, 'ann':'mph', 'spd':[ 15, 20, 25, 35]}, //------------------------------------------------------------------------- 61.Guernsey
+  EC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100]}, //---------------------------------------------------- 62.Ecuador
+  CS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100]}, //-------------------------------------------------------- 63.Costa Rica
+  RQ:         {'sgn': BGi, 'ann':'mph', 'spd':[ 5,10,15,20,25,30,35,40,45,50,55,60,65], 'noClearBg': true}, //------------------------------- 64.Puerto Rico
+  AG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 120]}, //------------------------------------------------------- 65.Algeria
+  BX:         {'sgn': BGa, 'ann':'mph', 'spd':[ 30, 35, 40, 50, 60, 70, 80, 90, 110]}, //---------------------------------------------------- 66.Brunei
+  PM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 60, 80]}, //----------------------------------------------------------------- 67.Panama
+  UZ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 30, 50, 70, 100]}, //-------------------------------------------------------------------- 68.Uzbekistan
+  MD:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90]}, // ------------------------------------------------------------ 69.Moldova
+  IN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // -------------------------------- 70.India
+  HR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // -------------------------------- 71.Croatia
+  LE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, // -------------------------------------------------- 72.Lebanon
+  HK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 100, 110]}, // -------------------------------------------------------------- 73.Hong Kong
+  EN:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 110]}, // ---------------------------------------- 74.Estonia
+  SN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 70, 80, 90]}, // ---------------------------------------------------------------- 75.Singapore
+  CM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 100]}, // ----------------------------------------------------------------------- 76.Cameroon
+  CI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120]}, // ---------------------------------------------------------- 77.Chile
+  QA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 80, 100, 120]}, // ------------------------------------------------------ 78.Quatar
+  MW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 120]}, // ------------------------------------------------------ 79.Montenegro
+  AA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 60, 80]}, // ---------------------------------------------------------------------------- 80.Aruba (ABC)
+  NS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 90]}, // ---------------------------------------------------------------------------- 81.Suriname
+  CW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // ---------------------------------------------------------------------------- 82.Curacao
+  BQ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // ---------------------------------------------------------------------------- 83.Bonaire / Saba Island
+  MF:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 80]}, // ---------------------------------------------------------------------------- 84.Sint Eustatius
+  MN:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90]}, // ------------------------------------------------------------ 85.Monaco
+  UP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 10, [20, BGh], 30, 40, 50, 90, 110, [130, BGj] ]}, // ------------------------------------ 86.Ukraine
+  BK: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ------------------------------------ 87.Bosnia-Herzegovina
+  GR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]}, // ------------------------------------ 88.Greece
+  PP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 100]}, // --------------------------------------------------------------------------- 89.Papua New Guinea
+  MP:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 80, 110]}, // ----------------------------------------------------------------------- 90.Mauritius
+  //IR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 70, 80, 90, 100, 110, 120]}, // --------------------------------------------------- 91.Iran
+  DR:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 45, 60, 100, 120]}, // ------------------------------------------------------ 92.Dominican Republic
+  BG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 50, 60, 80]}, // -------------------------------------------------------------------- 93.Bangladesh
+  PE:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 35, 40, 55, 60, 80, 100, 120 ]}, // --------------------------------------------------------- 94.Peru
+  ZA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------------------------- 95.Zambia
+  //AO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------------------------ 96.Angola
+  MZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ----------------------------------------------------- 97.Mozambique
+  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 75, 80, 100 ]}, // -------------------------------------------------------------- 98.Cyprus
+  AJ: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ------------------------------------------------------------------ 99.Azerbaijan
+  AM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ----------------------------------------------------------------------- 100.Armenia
+  AO: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // --------------------------------------------- 101.Angola
+  GT: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 20, 25, 30, 40, 60, 70, 80, 90 ]}, // ----------------------------------------------- 102.Guatemala
+  IR: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120 ]}, // ---------------------------- 103.Iran
+  JM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 65, 80, 100, 110 ]}, // --------------------------------------------------------- 104.Jamaica
+  VQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ,60, 65, 70, 75, 80 ], 'noClearBg': true}, //------ 105.Virgin Islands (US)
+  CQ:         {'sgn': BGc, 'ann':'mph', 'spd':[ 5,10, 15, 20, 25, 30, 35, 40, 45], 'noClearBg': true}, //------------------------------------ 106. Northern Mariana Islands (US)
+  PK:         {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, //-------------------------------------------------------------- 107. Pakistan
+  BA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 70, 80, 90, 100, 120 ]}, //-------------------------------------------------- 108.Bahrain
+  SA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140 ]}, //------------------------------- 109.Saudi Arabia
+  KU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 45, 50, 60, 80, 100, 120 ]}, //-------------------------------------------------- 110.Kuwait
+  KG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 5, 20, 40, 50, 60, 90 ]}, //----------------------------------------------------------------- 111.Kyrgyzstan
+  WA:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 80, 100, 120 ]}, //---------------------------------------------------------------112.Namibia
+  LT:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //-------------------------------------------------------113.Lesotho
+  WZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //-------------------------------------------------------114.eSwatini
+  ZI:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 60, 70, 80, 90, 100, 120 ]}, //-------------------------------------------------------115.Zimbabwe
+  AN:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90 ]}, //-----------------------------------------------------------------116.Andorra
+  MG:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //-----------------------------------------------117.Mongolia - Waze uses MG
+  HO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 25, 40, 50, 60, 80 ]}, //------------------------------------------------------------ 118. Honduras
+  MK:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 80, 100, 120, 130 ]}, //----------------------------------------------------- 119. Macedonia
+  YM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140 ]}, //------------------------------------- 120. Yemen
+  MO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //-------------------------------------------------- 121. Morocco - Waze uses MO
+  SU:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 70, 120 ]}, //------------------------------------------------------------------------122.Sudan
+  VM:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------------------------- 123.Vietnam - Waze uses VM
+  NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------------------ 124. Nepal
+  FJ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------------------------ 125. Fiji
+  GI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50 ]}, //------------------------------------------------------------------------ 126. Gibraltar
+  SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //---------------------------------------------------------------------- 127. South Sudan
+  TH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------------- 128. Thailand
+  GH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 90, 100 ]}, //----------------------------------------------------------------------- 129. Ghana
+  MV:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 25, 30, 35, 50 ]}, //---------------------------------------------------------------- 130. Maldives
+  TJ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 60, 90, 110 ]}, //----------------------------------------------------------------------- 131. Tajikistan
+  AY:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 25, 30, 35, 40 ]}, //-------------------------------------------------------------------- 132. Antarctica
+  CB:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 80, 100, 120 ]}, //-------------------------------------------------------------- 134. Cambodia
 };
 
 let wmeSDK;
@@ -434,7 +431,7 @@ function renderSigns(activeConfig, holder, click) {
     // The speed value
     const speedValue = document.createElement("div");
     speedValue.id = 'spd_'+ allowedSpeed;
-    speedValue.style.cssText = 'text-align:center;line-height:'+(dims[1]*scale)+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
+    speedValue.style.cssText = 'text-align:center;margin-top:'+(dims[2] - (dims[2]*2*(1 - scale)))+'px;font-size:' + (10 * scale) + 'px;font-family:\'Varela Round\',sans-serif;color:#000; font-weight:bold;visibility:'+dims[3];
     speedValue.innerHTML = allowedSpeed;
     sign.append(speedValue);
     holder.append(sign);
@@ -452,10 +449,10 @@ function renderClearSign(activeConfig, holder) {
 
   // Get width/height of sign background img
   const scale = options.iconScale / 100;
-  if (options.clearSignBackground) {
-    sign.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgImage + '\');background-size:contain;';
+  if (options.clearSignBackground && !activeConfig.noClearBg) {
+    sign.style.cssText = 'display:flex;cursor:pointer;float:left;width:'+(dims[1]*scale)+'px;height:'+(dims[0]*scale)+'px;background-image: url(\''+ bgImage + '\');background-size:contain;';
   } else {
-    sign.style.cssText = 'cursor:pointer;float:left;width:' + (dims[1] * scale) + 'px;height:' + (dims[0] * scale) + 'px;';
+    sign.style.cssText = 'display:flex;cursor:pointer;float:left;width:' + (dims[1] * scale) + 'px;height:' + (dims[0] * scale) + 'px;';
   }
 
   sign.onclick = () => clickSegmentSpeed(0);
@@ -463,7 +460,7 @@ function renderClearSign(activeConfig, holder) {
   // The bin icon
   const bin = document.createElement("div");
   bin.id = 'spd_clear';
-  bin.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale*0.8)+'px;height:'+(dims[0]*scale*0.8)+'px;margin-left:'+(dims[1]*scale*0.1)+'px;margin-top:'+(dims[1]*scale*0.1)+'px;background-image: url(\''+ binimg + '\');background-size:contain;';
+  bin.style.cssText = 'cursor:pointer;float:left;width:'+(dims[1]*scale*0.8)+'px;height:'+(dims[0]*scale*0.8)+'px;margin:auto;auto;background-image: url(\''+ binimg + '\');background-size:contain;';
   sign.append(bin);
 
   holder.append(sign);
@@ -515,7 +512,7 @@ function constructSettings() {
 
     addTextNumberSettings(scriptContentPane, '', 'Icon Scale in %', 'iconScale');
     addBooleanSettingsCallback(scriptContentPane, '', 'Enable Clear Sign', 'clearSign', toggleBoolean);
-    addBooleanSettingsCallback(scriptContentPane, '', 'Show speed sign behind Clear Sign', 'clearSignBackground', toggleBoolean);
+    addBooleanSettingsCallback(scriptContentPane, '', 'Show speed sign behind Clear Sign (if supported)', 'clearSignBackground', toggleBoolean);
   });
 
 }

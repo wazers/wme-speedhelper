@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.8
+// @version        1.0.9
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -30,7 +30,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br />" + "- Added Antarctica";
 //ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fixed speed alignment for non circle signs";
+ChangeLog = ChangeLog + "<br />" + "- Updated speeds for the Netherlands and Cyprus";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -67,7 +67,7 @@ const BGk = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAiCAYAAADPuYBy
 /* // BGh = ['data:image/png;base64,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','34|23|17|hidden']; // lost in translation */
 
 const signConfig = {
-  NL:         {'sgn': BGa, 'ann':'kph', 'spd':[ [15,BGb], 30, 50, 60, 70, 80, 100, 120, 130 ]}, //------------------------------------------- 1.The Netherlands
+  NL:         {'sgn': BGa, 'ann':'kph', 'spd':[ [15,BGb], 30, 50, 60, 70, 80, 90, 100, 120, 130 ]}, //--------------------------------------- 1.The Netherlands
   BE:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGb], 30, 50, 70, 90, 100, 120 ]}, //---------------------------------------------------- 2.Belgium
   LU:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 50, 70, 90, 110, 130 ]}, //---------------------------------------------------- 3.Luxemburg
   FR:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20, BGf], 30, 50, 70, 80, 90, 110, 130 ]}, //----------------------------------------------- 4.France
@@ -164,7 +164,7 @@ const signConfig = {
   ZA:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 50, 60, 80, 100, 120 ]}, // ------------------------------------------------------------- 95.Zambia
   //AO:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 60, 90, 120 ]}, // ------------------------------------------------------------------------ 96.Angola
   MZ:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 90, 100, 120 ]}, // ----------------------------------------------------- 97.Mozambique
-  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 75, 80, 100 ]}, // -------------------------------------------------------------- 98.Cyprus
+  CY:			    {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 50, 65, 75, 80, 90, 100 ]}, // ---------------------------------------------------------- 98.Cyprus
   AJ: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 90, 110 ]}, // ------------------------------------------------------------------ 99.Azerbaijan
   AM: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 40, 60, 70, 90 ]}, // ----------------------------------------------------------------------- 100.Armenia
   AO: 		    {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, // --------------------------------------------- 101.Angola

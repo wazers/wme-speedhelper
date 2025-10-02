@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.12
+// @version        1.0.13
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -27,7 +27,8 @@ const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
 ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
+ChangeLog = ChangeLog + "<br />" + "- Fixed helper label positioning inside forms";
+// ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
 //ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 //ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Fixed speed positioning for US sign when scaling";
@@ -430,7 +431,7 @@ function addToSpeedLimitSection(content) {
   if ($speedLimitDiv.length === 0) {
     $speedLimitDiv = $("div.speed-limit-rev");
   }
-  $speedLimitDiv.prepend(content);
+  $speedLimitDiv.siblings('wz-label').after(content);
 }
 
 function clickSegmentSpeed(allowedSpeed) {

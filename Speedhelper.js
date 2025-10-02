@@ -28,6 +28,7 @@ const ScriptVersion = GM_info.script.version;
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
 ChangeLog = ChangeLog + "<br /><b>New: </b>";
 ChangeLog = ChangeLog + "<br />" + "- Fixed helper label positioning inside forms";
+ChangeLog = ChangeLog + "<br />" + "- Update SL for enabled directions only";
 // ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
 //ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 //ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
@@ -448,11 +449,16 @@ function clickSegmentSpeed(allowedSpeed) {
   }
 
   selection.ids.forEach(id => {
+    // For each segment, only update the direction(s) that are enabled
+    let segment = wmeSDK.DataModel.Segments.getById({segmentId: id});
+    let fwdSpeed = (segment.isTwoWay || segment.isAtoB) ? allowedSpeed : null;
+    let revSpeed = (segment.isTwoWay || segment.isBtoA) ? allowedSpeed : null;
+
     try {
       wmeSDK.DataModel.Segments.updateSegment({
         segmentId: id,
-        fwdSpeedLimit: !!allowedSpeed ? allowedSpeed : null,
-        revSpeedLimit: !!allowedSpeed ? allowedSpeed : null
+        fwdSpeedLimit: fwdSpeed,
+        revSpeedLimit: revSpeed
       })
     }
     catch (err) {

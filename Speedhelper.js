@@ -26,13 +26,11 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 ChangeLog = ChangeLog + "<br />" + "- Fixed helper label positioning inside forms";
 ChangeLog = ChangeLog + "<br />" + "- Update SL for enabled directions only";
-// ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
-//ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
-//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Fixed speed positioning for US sign when scaling";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};

@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.12
+// @version        1.0.13
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -27,7 +27,9 @@ const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
 ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
+ChangeLog = ChangeLog + "<br />" + "- Fixed helper label positioning inside forms";
+ChangeLog = ChangeLog + "<br />" + "- Update SL for enabled directions only";
+// ChangeLog = ChangeLog + "<br />" + "- Added Faroe Islands";
 //ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 //ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Fixed speed positioning for US sign when scaling";
@@ -430,7 +432,7 @@ function addToSpeedLimitSection(content) {
   if ($speedLimitDiv.length === 0) {
     $speedLimitDiv = $("div.speed-limit-rev");
   }
-  $speedLimitDiv.prepend(content);
+  $speedLimitDiv.siblings('wz-label').after(content);
 }
 
 function clickSegmentSpeed(allowedSpeed) {
@@ -447,11 +449,16 @@ function clickSegmentSpeed(allowedSpeed) {
   }
 
   selection.ids.forEach(id => {
+    // For each segment, only update the direction(s) that are enabled
+    let segment = wmeSDK.DataModel.Segments.getById({segmentId: id});
+    let fwdSpeed = (segment.isTwoWay || segment.isAtoB) ? allowedSpeed : null;
+    let revSpeed = (segment.isTwoWay || segment.isBtoA) ? allowedSpeed : null;
+
     try {
       wmeSDK.DataModel.Segments.updateSegment({
         segmentId: id,
-        fwdSpeedLimit: !!allowedSpeed ? allowedSpeed : null,
-        revSpeedLimit: !!allowedSpeed ? allowedSpeed : null
+        fwdSpeedLimit: fwdSpeed,
+        revSpeedLimit: revSpeed
       })
     }
     catch (err) {

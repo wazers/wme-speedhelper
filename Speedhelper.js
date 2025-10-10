@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.13
+// @version        1.0.14
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -29,8 +29,7 @@ let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />
 //ChangeLog = ChangeLog + "<br /><b>New: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fixed helper label positioning inside forms";
-ChangeLog = ChangeLog + "<br />" + "- Update SL for enabled directions only";
+ChangeLog = ChangeLog + "<br />" + "- Fixed clear speed no longer working after the previous update";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -444,6 +443,9 @@ function clickSegmentSpeed(allowedSpeed) {
 
   if (!!allowedSpeed && wmeSDK.Settings.getUserSettings().isImperial) {
     allowedSpeed = allowedSpeed * 1.609344;
+  } else if (!allowedSpeed) {
+    // The SDK really needs null to clear speeds
+    allowedSpeed = null;
   }
 
   selection.ids.forEach(id => {

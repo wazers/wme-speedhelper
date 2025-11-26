@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.14
+// @version        1.0.15
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,10 +26,10 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-//ChangeLog = ChangeLog + "<br /><b>New: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Added Cambodia";
-ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Fixed clear speed no longer working after the previous update";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added Solomon Islands";
+//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Fixed clear speed no longer working after the previous update";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -263,6 +263,7 @@ const signConfig = {
   CB:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 80, 100, 120 ]}, //-------------------------------------------------------------- 134. Cambodia
   JA:         {'sgn': BGl, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 80, 100, 120 ]}, //------------------------------------------------------ 135. Japan
   FO:         {'sgn': BGl, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100 ]}, //--------------------------------------------------- 136. Faroe Islands
+  BP:         {'sgn': BGl, 'ann':'kph', 'spd':[ 40, 60 ]}, //-------------------------------------------------------------------------------- 137. Solomon Islands
 };
 
 let wmeSDK;

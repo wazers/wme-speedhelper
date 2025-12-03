@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.15
+// @version        1.0.16
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,10 +26,10 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Solomon Islands";
-//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Fixed clear speed no longer working after the previous update";
+//ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Added Solomon Islands";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Nepal";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -251,7 +251,7 @@ const signConfig = {
   MO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //-------------------------------------------------- 121. Morocco - Waze uses MO
   SU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 40, 70, 120 ]}, //------------------------------------------------------------------------122.Sudan
   VM:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------------------------- 123.Vietnam - Waze uses VM
-  NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------------------ 124. Nepal
+  NP:         {'sgn': BGa, 'ann':'kph', 'spd':[ [20,BGk], 25, 30, 40, 50, 60, 70 ]}, //------------------------------------------------------ 124. Nepal
   FJ:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80 ]}, //------------------------------------------------------------ 125. Fiji
   GI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50 ]}, //------------------------------------------------------------------------ 126. Gibraltar
   SS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 50, 90, 110, 130 ]}, //---------------------------------------------------------------------- 127. South Sudan

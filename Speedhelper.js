@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.17
+// @version        1.0.18
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,10 +26,10 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Mauritania, Western Sahara and Tunisia";
-//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Nepal";
+//ChangeLog = ChangeLog + "<br /><b>New: </b>";
+//ChangeLog = ChangeLog + "<br />" + "- Added Mauritania, Western Sahara and Tunisia";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Taiwan";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -182,7 +182,7 @@ const signConfig = {
   FI:         {'sgn': BGd, 'ann':'kph', 'spd':[ [20,BGg], 30, 40, 50, 60, 70, 80, 90, 100, 120 ]}, //---------------------------------------- 52.Finland
   IL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60 ,70, 80, 90 ,100, 110, 120, 130]}, //----------------------------------------- 53.Israel
   TC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 25, 40, 60, 70, 80, 90, 100, 120, 140]}, //-------------------------------------------------- 54.United Arab Emirates
-  TW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140]}, //------------------------------------ 55.Taiwan
+  TW:         {'sgn': BGa, 'ann':'kph', 'spd':[ 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //------------------------------------------- 55.Taiwan
   CE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]}, //------------------------------- 56.Sri Lanka
   NO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //--------------------------------------------------- 57.Norway
   WE:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100, 110]}, //--------------------------------------------------- 58.West Bank

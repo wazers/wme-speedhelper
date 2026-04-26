@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.18
+// @version        1.0.19
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -26,10 +26,10 @@ const ScriptName = GM_info.script.name;
 const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
-//ChangeLog = ChangeLog + "<br /><b>New: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Added Mauritania, Western Sahara and Tunisia";
+ChangeLog = ChangeLog + "<br /><b>New: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Added Antigua";
 ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Taiwan";
+ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Taiwan (1.0.18)";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -267,6 +267,7 @@ const signConfig = {
   WI:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //-------------------------------------------------- 138. Western Sahara
   MR:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 100, 120 ]}, //-------------------------------------------------- 139. Mauritania
   TS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 50, 70, 90, 110 ]}, //--------------------------------------------------------------- 140. Tunisia
+  AC:         {'sgn': BGa, 'ann':'mph', 'spd':[ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65 ]}, //------------------------------------- 141. Antigua
 };
 
 let wmeSDK;

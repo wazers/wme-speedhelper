@@ -4,7 +4,7 @@
 // @namespace      broosgert@gmail.com
 // @grant          none
 // @grant          GM_info
-// @version        1.0.25
+// @version        1.0.26
 // @include 	     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
 // @exclude        https://www.waze.com/user/*editor/*
 // @exclude        https://www.waze.com/*/user/*editor/*
@@ -27,7 +27,7 @@ const ScriptVersion = GM_info.script.version;
 
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
 ChangeLog = ChangeLog + "<br /><b>New: </b>";
-ChangeLog = ChangeLog + "<br />" + "- Added Jordan";
+ChangeLog = ChangeLog + "<br />" + "- Added Cuba";
 //ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
 //ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Vietnam";
 
@@ -301,6 +301,7 @@ const signConfig = {
   ST:         {'sgn': BGEmpty, 'ann':'mph', 'spd':[ [15, bgStLucia15], [30, bgStLucia30], [40, bgStLucia40] ]}, //--------------------------- 150. St Lucia
   AL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 110 ]}, //--------------------------------------------------- 151. Albania
   JO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 50, 60, 80, 100, 120 ]}, //---------------------------------------------------------- 152. Jordan
+  CU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 80, 100, 120 ]}, //---------------------------------------------------------- 153. Cuba
 };
 
 let wmeSDK;

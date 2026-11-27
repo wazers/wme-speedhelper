@@ -28,8 +28,9 @@ const ScriptVersion = GM_info.script.version;
 let ChangeLog = "WME SpeedHelper has been updated to " + ScriptVersion + "<br />";
 ChangeLog = ChangeLog + "<br /><b>New: </b>";
 ChangeLog = ChangeLog + "<br />" + "- Added Cuba";
-//ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
-//ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Vietnam";
+ChangeLog = ChangeLog + "<br />" + "- Added Buthan";
+ChangeLog = ChangeLog + "<br /><br /><b>Updated: </b>";
+ChangeLog = ChangeLog + "<br />" + "- Adjusted speeds for Ecuador";
 
 // Add Google Varela Round font to make sure signs look the same everywhere (less hassle)
 const WebFontConfig = {google:{families:['Varela+Round::latin' ]}};
@@ -211,7 +212,7 @@ const signConfig = {
   CH:         {'sgn': BGa, 'ann':'kph', 'spd':[ 120, 100, 80, 70, 60, 50, 40, 20]}, //------------------------------------------------------- 59.China
   ID:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120]}, //------------------------------------------- 60.Indonesia
   GK:         {'sgn': BGa, 'ann':'mph', 'spd':[ 15, 20, 25, 35]}, //------------------------------------------------------------------------- 61.Guernsey
-  EC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 100]}, //---------------------------------------------------- 62.Ecuador
+  EC:         {'sgn': BGa, 'ann':'kph', 'spd':[ 10, 15, 20, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100]}, //------------------------------------ 62.Ecuador
   CS:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 90, 100]}, //-------------------------------------------------------- 63.Costa Rica
   RQ:         {'sgn': BGi, 'ann':'mph', 'spd':[ 5,10,15,20,25,30,35,40,45,50,55,60,65], 'noClearBg': true}, //------------------------------- 64.Puerto Rico
   AG:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 40, 50, 60, 70, 80, 100, 120]}, //------------------------------------------------------- 65.Algeria
@@ -301,7 +302,8 @@ const signConfig = {
   ST:         {'sgn': BGEmpty, 'ann':'mph', 'spd':[ [15, bgStLucia15], [30, bgStLucia30], [40, bgStLucia40] ]}, //--------------------------- 150. St Lucia
   AL:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 30, 40, 50, 60, 70, 80, 90, 110 ]}, //--------------------------------------------------- 151. Albania
   JO:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 50, 60, 80, 100, 120 ]}, //---------------------------------------------------------- 152. Jordan
-  CU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 50, 60, 70, 80, 90, 100 ]}, //---------------------------------------------------------- 153. Cuba
+  CU:         {'sgn': BGa, 'ann':'kph', 'spd':[ 20, 40, 50, 60, 70, 80, 90, 100 ]}, //------------------------------------------------------- 153. Cuba
+  BT:         {'sgn': BGa, 'ann':'kph', 'spd':[ 30, 35, 50 ]}, //---------------------------------------------------------------------------- 154. Buthan
 };
 
 let wmeSDK;
